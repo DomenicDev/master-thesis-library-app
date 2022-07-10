@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "catalogue-service"
-include("app", "domain", "application", "infrastructure", "utilities")
+include("app", "domain", "application", "adapter", "utilities")

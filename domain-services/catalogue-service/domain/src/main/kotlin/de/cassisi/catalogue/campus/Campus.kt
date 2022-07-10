@@ -1,8 +1,9 @@
 package de.cassisi.catalogue.campus
 
-sealed interface Campus {
+import de.cassisi.catalogue.common.EventSourcedAggregate
 
-    fun getCampusId(): CampusId
+sealed interface Campus: EventSourcedAggregate<CampusId, CampusEvent> {
+
     fun getCampusInformation(): CampusLocation
 
 }

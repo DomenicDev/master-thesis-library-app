@@ -1,12 +1,14 @@
 package de.cassisi.catalogue.book
 
 import de.cassisi.catalogue.campus.CampusId
+import de.cassisi.catalogue.metadata.MetadataId
 
 
 sealed interface BookEvent {
 
     data class BookAddedToCatalogue(
         val bookId: BookId,
+        val metadataId: MetadataId,
         val campusId: CampusId,
         val signature: Signature
     ) : BookEvent

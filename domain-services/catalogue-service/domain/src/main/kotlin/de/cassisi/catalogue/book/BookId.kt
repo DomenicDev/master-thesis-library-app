@@ -1,5 +1,5 @@
 package de.cassisi.catalogue.book
 
-import java.util.UUID
+import java.util.*
 
-data class BookId(val bookId: UUID)
+data class BookId(val id: UUID)

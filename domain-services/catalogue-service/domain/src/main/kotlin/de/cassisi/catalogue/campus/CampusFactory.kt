@@ -1,12 +1,17 @@
 package de.cassisi.catalogue.campus
 
-import de.cassisi.catalogue.common.Version
+import de.cassisi.catalogue.common.Versions
 
 object CampusFactory {
 
-    fun create(campusId: CampusId, campusLocation: CampusLocation): Campus {
-        val campus = CampusAggregate(campusId, Version.init())
-        val createdEvent = CampusEvents.CampusOpened(campusId, campusLocation)
+    fun create(command: CreateCampus): Campus {
+        // prepare fields
+        val campusId = command.campusId
+        val campusLocation = command.campusLocation
+
+        // create aggregate
+        val campus = CampusAggregate(campusId, Versions.init())
+        val createdEvent = CampusOpened(campusId, campusLocation)
         campus.registerEvent(createdEvent)
         return campus
     }

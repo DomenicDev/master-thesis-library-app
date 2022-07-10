@@ -1,9 +1,9 @@
 package de.cassisi.catalogue.common
 
-data class Version(val version: Long) {
+interface Version {
 
-    companion object {
-        fun init() = Version(-1)
-    }
+    fun get(): Long
+
+    fun isNew(): Boolean
 
 }
