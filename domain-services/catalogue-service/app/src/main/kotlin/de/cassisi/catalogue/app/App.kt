@@ -18,7 +18,7 @@ fun main() {
     val client = EventStoreDBClient.create(settings)
 
     // infrastructure
-    val bookEventStoreRepository = BookEventStoreRepositoryNew(client)
+    val bookEventStoreRepository = BookEventStoreRepository(client)
 
     // command handler
     val bookCommandHandler = BookCommandHandler(bookEventStoreRepository)

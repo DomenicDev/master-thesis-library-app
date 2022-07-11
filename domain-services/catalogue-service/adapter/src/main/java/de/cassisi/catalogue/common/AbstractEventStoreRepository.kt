@@ -66,5 +66,5 @@ abstract class AbstractEventStoreRepository<AggregateType : EventSourcedAggregat
 
     abstract fun getEventTypeName(event: EventType): String
 
-    abstract fun toStreamName(bookId: ID): String
+    abstract fun toStreamName(id: ID): String
 }

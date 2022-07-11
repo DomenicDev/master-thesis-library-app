@@ -1,5 +1,6 @@
 package de.cassisi.catalogue.campus
 
+import de.cassisi.catalogue.common.Version
 import de.cassisi.catalogue.common.Versions
 
 object CampusFactory {
@@ -14,6 +15,10 @@ object CampusFactory {
         val createdEvent = CampusOpened(campusId, campusLocation)
         campus.registerEvent(createdEvent)
         return campus
+    }
+
+    fun empty(campusId: CampusId, version: Version): Campus {
+        return CampusAggregate(campusId, version)
     }
 
 }
