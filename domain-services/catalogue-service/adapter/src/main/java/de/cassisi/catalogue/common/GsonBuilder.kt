@@ -1,4 +1,4 @@
-package de.cassisi.catalogue.utils
+package de.cassisi.catalogue.common
 
 import com.eventstore.dbclient.EventData
 import com.eventstore.dbclient.EventDataBuilder
@@ -18,4 +18,5 @@ object GsonBuilder {
     // thanks to: https://stackoverflow.com/questions/33381384/how-to-use-typetoken-generics-with-gson-in-kotlin
     inline fun <reified T> Gson.fromJson(json: String): T = fromJson(json, object: TypeToken<T>() {}.type)
 
+    fun gson(): Gson = this.gson
 }

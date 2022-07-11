@@ -4,12 +4,12 @@ abstract class BaseAggregate<ID, EventType>(private val id: ID, private val vers
 
     private val changes: MutableList<EventType> = mutableListOf()
 
-     fun loadFromHistory(events: List<EventType>) {
+     override fun loadFromHistory(events: List<EventType>) {
          events.forEach { handleEvent(it) }
      }
 
     fun registerEvent(event: EventType) {
-        changes.add(event) // store event in changes for later persistence
+        changes.add(event)      // store event in changes for later persistence
         handleEvent(event)      // handle event and update state
     }
 

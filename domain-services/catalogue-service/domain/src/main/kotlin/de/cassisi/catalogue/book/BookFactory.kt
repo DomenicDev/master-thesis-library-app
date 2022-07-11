@@ -1,6 +1,7 @@
 package de.cassisi.catalogue.book
 
 import de.cassisi.catalogue.book.BookEvent.BookAddedToCatalogue
+import de.cassisi.catalogue.common.Version
 import de.cassisi.catalogue.common.Versions
 
 object BookFactory {
@@ -17,4 +18,7 @@ object BookFactory {
         return book
     }
 
+    fun empty(bookId: BookId, version: Version): Book {
+        return BookAggregate(bookId, version)
+    }
 }
