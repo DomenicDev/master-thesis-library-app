@@ -4,11 +4,11 @@
 
 plugins {
     id("de.cassisi.catalogue.kotlin-application-conventions")
+    id("de.cassisi.catalogue.kotlin-infrastructure-conventions")
 }
 
 dependencies {
-    implementation("org.apache.commons:commons-text")
-    implementation(project(":utilities"))
+    implementation(project(":adapter"))
 }
 
 application {

@@ -44,6 +44,7 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
     private fun handle(event: BookAddedToCatalogue) {
         this.campusId = event.campusId
         this.signature = event.signature
+        this.metadataId = event.metadataId
     }
 
     private fun handle(event: BookSignatureUpdated) {
