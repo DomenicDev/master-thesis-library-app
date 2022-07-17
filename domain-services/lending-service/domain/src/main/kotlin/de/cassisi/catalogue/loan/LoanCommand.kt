@@ -10,6 +10,7 @@ sealed interface LoanCommand {
         val loanId: LoanId,
         val studentId: StudentId,
         val bookId: BookId,
+        val startDate: LocalDate
     ) : LoanCommand
 
 

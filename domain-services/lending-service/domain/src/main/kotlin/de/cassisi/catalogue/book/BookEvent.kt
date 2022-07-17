@@ -1,7 +1,16 @@
 package de.cassisi.catalogue.book
 
 
-sealed interface BookEvent {
+sealed interface BookEvent
 
+data class BorrowableBookAdded(
+    val id: BookId
+): BookEvent
 
-}
+data class BookBorrowed(
+    val bookId: BookId
+) : BookEvent
+
+data class BookReturned(
+    val bookId: BookId
+): BookEvent
