@@ -43,7 +43,7 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
     }
 
     override fun toStreamName(id: BookId): String {
-        return "borrowablebook-$id"
+        return "borrowablebook-${id.id}"
     }
 
     override fun getEventTypeName(event: BookEvent): String {
