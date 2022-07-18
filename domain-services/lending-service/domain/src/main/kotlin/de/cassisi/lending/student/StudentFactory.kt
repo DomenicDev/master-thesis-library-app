@@ -4,7 +4,7 @@ import de.cassisi.lending.common.Versions
 
 object StudentFactory {
 
-    fun create(command: CreateStudent): Student {
+    fun create(command: CreateStudentCommand): Student {
         val aggregate = StudentAggregate(command.studentId, Versions.init())
         val createdEvent = StudentCreated(
             command.studentId,

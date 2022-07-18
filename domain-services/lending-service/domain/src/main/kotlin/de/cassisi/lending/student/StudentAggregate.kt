@@ -20,20 +20,28 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         return this.charges
     }
 
-    override fun execute(command: ChargeStudent) {
+    override fun execute(command: ChargeStudentCommand) {
         val currentCharges = getCharges().amount
         val newChargesAmount = currentCharges + CHARGE_INCREMENT
-        val event = StudentChargesChanged(
+        val event = StudentCharged(
             getId(),
             Charges(newChargesAmount)
         )
         registerEvent(event)
     }
 
-    override fun execute(command: UpdateMatriculationStatus) {
+    override fun execute(command: UpdateMatriculationStatusCommand) {
         val event = StudentMatriculatedChanged(
             getId(),
             command.newStatus
+        )
+        registerEvent(event)
+    }
+
+    override fun execute(command: ResetChargesCommand) {
+        val event = StudentCharged(
+            getId(),
+            Charges(0)
         )
         registerEvent(event)
     }
@@ -42,7 +50,8 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         when (event) {
             is StudentCreated -> handle(event)
             is StudentMatriculatedChanged -> handle(event)
-            is StudentChargesChanged -> handle(event)
+            is StudentCharged -> handle(event)
+            is StudentChargesReset -> handle(event)
         }
     }
 
@@ -55,8 +64,12 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         this.status = event.matriculationStatus
     }
 
-    private fun handle(event: StudentChargesChanged) {
+    private fun handle(event: StudentCharged) {
         this.charges = event.newCharges
+    }
+
+    private fun handle(event: StudentChargesReset) {
+        this.charges = event.charges
     }
 
 }
