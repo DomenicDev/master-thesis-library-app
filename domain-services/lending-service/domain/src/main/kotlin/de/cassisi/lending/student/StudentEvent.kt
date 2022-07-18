@@ -9,7 +9,7 @@ data class StudentCreated(
 ) : StudentEvent
 
 data class StudentMatriculatedChanged(
-    val student: StudentId,
+    val studentId: StudentId,
     val matriculationStatus: MatriculationStatus
 ) : StudentEvent
 

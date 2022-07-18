@@ -4,7 +4,7 @@ package de.cassisi.lending.book
 sealed interface BookEvent
 
 data class BorrowableBookAdded(
-    val id: BookId
+    val bookId: BookId
 ): BookEvent
 
 data class BookBorrowed(

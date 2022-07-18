@@ -2,7 +2,7 @@ package de.cassisi.lending.common
 
 import com.eventstore.dbclient.*
 
-abstract class AbstractEventStoreRepository<AggregateType : EventSourcedAggregate<ID,EventType>, ID, EventType>(
+abstract class AbstractEventStoreRepository<AggregateType : EventSourcedAggregate<ID, EventType>, ID, EventType, SerializedEventType>(
     private val client: EventStoreDBClient
 ) {
 
@@ -58,11 +58,11 @@ abstract class AbstractEventStoreRepository<AggregateType : EventSourcedAggregat
 
     abstract fun createEmptyAggregate(id: ID, version: Version): AggregateType
 
-    abstract fun convertToSerializableEvent(event: EventType): Any
+    abstract fun convertToSerializableEvent(event: EventType): SerializedEventType
 
-    abstract fun convertToDomainEvent(raw: Any): EventType
+    abstract fun convertToDomainEvent(raw: SerializedEventType): EventType
 
-    abstract fun getSerializableEventType(eventType: String): Class<*>
+    abstract fun getSerializableEventType(eventType: String): Class<out SerializedEventType>
 
     abstract fun getEventTypeName(event: EventType): String
 

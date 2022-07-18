@@ -9,7 +9,7 @@ object GsonBuilder {
 
     private val gson = Gson()
 
-    fun buildEventData(eventType: String, event: Any): EventData {
+    fun <T> buildEventData(eventType: String, event: T): EventData {
         val json = gson.toJson(event)
         val bytes = json.encodeToByteArray()
         return EventDataBuilder.json(eventType, bytes).build()
@@ -18,5 +18,5 @@ object GsonBuilder {
     // thanks to: https://stackoverflow.com/questions/33381384/how-to-use-typetoken-generics-with-gson-in-kotlin
     inline fun <reified T> Gson.fromJson(json: String): T = fromJson(json, object: TypeToken<T>() {}.type)
 
-    fun gson(): Gson = this.gson
+    fun gson(): Gson = gson
 }

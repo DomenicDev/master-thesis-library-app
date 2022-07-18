@@ -1,5 +1,6 @@
 package de.cassisi.lending.student
 
+import de.cassisi.lending.common.Version
 import de.cassisi.lending.common.Versions
 
 object StudentFactory {
@@ -15,8 +16,8 @@ object StudentFactory {
         return aggregate
     }
 
-    fun empty(studentId: StudentId): Student {
-        return StudentAggregate(studentId, Versions.init())
+    fun empty(studentId: StudentId, version: Version): Student {
+        return StudentAggregate(studentId, version)
     }
 
 }
