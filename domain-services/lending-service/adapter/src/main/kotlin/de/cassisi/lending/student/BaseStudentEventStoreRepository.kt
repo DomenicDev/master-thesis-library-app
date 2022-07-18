@@ -9,7 +9,9 @@ open class BaseStudentEventStoreRepository(client: EventStoreDBClient) : Abstrac
 
     companion object {
         private const val STUDENT_ADDED = "student-added"
-
+        private const val STUDENT_MATRICULATION_CHANGED = "student-matriculation-changed"
+        private const val STUDENT_CHARGED = "student-charged"
+        private const val STUDENT_CHARGES_RESET = "student-charges-reset"
     }
 
     override fun createEmptyAggregate(id: StudentId, version: Version): Student {
@@ -61,14 +63,25 @@ open class BaseStudentEventStoreRepository(client: EventStoreDBClient) : Abstrac
     }
 
     override fun getSerializableEventType(eventType: String): Class<out SerializableStudentEvent> {
-        TODO("Not yet implemented")
+        return when (eventType) {
+            STUDENT_ADDED -> SerializableStudentCreated::class.java
+            STUDENT_MATRICULATION_CHANGED -> SerializableStudentMatriculationChanged::class.java
+            STUDENT_CHARGED -> SerializableStudentCharged::class.java
+            STUDENT_CHARGES_RESET -> SerializableStudentChargesReset::class.java
+            else -> throw IllegalArgumentException()
+        }
     }
 
     override fun toStreamName(id: StudentId): String {
-        TODO("Not yet implemented")
+        return "student-${id.uuid}"
     }
 
     override fun getEventTypeName(event: StudentEvent): String {
-        TODO("Not yet implemented")
+        return when (event) {
+            is StudentCreated -> STUDENT_ADDED
+            is StudentMatriculatedChanged -> STUDENT_MATRICULATION_CHANGED
+            is StudentCharged -> STUDENT_CHARGED
+            is StudentChargesReset -> STUDENT_CHARGES_RESET
+        }
     }
 }
