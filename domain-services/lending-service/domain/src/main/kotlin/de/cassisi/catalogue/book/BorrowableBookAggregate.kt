@@ -11,7 +11,7 @@ class BorrowableBookAggregate(id: BookId, version: Version) : BorrowableBook, Ba
         return this.available
     }
 
-    override fun execute(command: BorrowBookCommand) {
+    override fun execute(command: BookCommand.BorrowBookCommand) {
         if (!isAvailableForLoan()) {
             throw BookAlreadyLoanException(getId())
         }
@@ -19,7 +19,7 @@ class BorrowableBookAggregate(id: BookId, version: Version) : BorrowableBook, Ba
         registerEvent(bookBorrowedEvent)
     }
 
-    override fun execute(command: ReturnBookCommand) {
+    override fun execute(command: BookCommand.ReturnBookCommand) {
         val bookReturnedEvent = BookReturned(getId())
         registerEvent(bookReturnedEvent)
     }

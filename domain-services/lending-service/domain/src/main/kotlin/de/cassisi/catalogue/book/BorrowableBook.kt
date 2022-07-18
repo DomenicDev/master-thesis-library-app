@@ -6,8 +6,8 @@ sealed interface BorrowableBook: EventSourcedAggregate<BookId, BookEvent> {
 
     fun isAvailableForLoan(): Boolean
 
-    fun execute(command: BorrowBookCommand)
+    fun execute(command: BookCommand.BorrowBookCommand)
 
-    fun execute(command: ReturnBookCommand)
+    fun execute(command: BookCommand.ReturnBookCommand)
 
 }

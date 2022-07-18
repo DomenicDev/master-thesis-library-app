@@ -1,12 +1,18 @@
 package de.cassisi.catalogue.book
 
 
-sealed interface BookCommand
+sealed interface BookCommand {
+    data class AddBook(
+        val bookId: BookId
+    ): BookCommand
 
-data class BorrowBookCommand(
-    val bookId: BookId,
-)
+    data class BorrowBookCommand(
+        val bookId: BookId,
+    ): BookCommand
 
-data class ReturnBookCommand(
-    val bookId: BookId
-)
+    data class ReturnBookCommand(
+        val bookId: BookId
+    ): BookCommand
+
+}
+
