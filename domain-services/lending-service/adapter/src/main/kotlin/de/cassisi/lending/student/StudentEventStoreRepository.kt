@@ -5,7 +5,7 @@ import de.cassisi.lending.common.AbstractEventStoreRepository
 import de.cassisi.lending.common.Version
 
 
-open class BaseStudentEventStoreRepository(client: EventStoreDBClient) : AbstractEventStoreRepository<Student,StudentId,StudentEvent, SerializableStudentEvent>(client){
+open class StudentEventStoreRepository(client: EventStoreDBClient) : AbstractEventStoreRepository<Student,StudentId,StudentEvent, SerializableStudentEvent>(client){
 
     companion object {
         private const val STUDENT_ADDED = "student-added"
