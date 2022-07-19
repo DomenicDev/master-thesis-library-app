@@ -6,7 +6,7 @@ class CloseLoanExecutor(private val repository: CloseLoanRepository) : CloseLoan
 
     override fun execute(command: LoanCommand.ReturnBook) {
         val loanId = command.loanId
-        val loan = repository.findById(loanId)
+        val loan = repository.getById(loanId)
         loan.execute(command)
         repository.save(loan)
     }

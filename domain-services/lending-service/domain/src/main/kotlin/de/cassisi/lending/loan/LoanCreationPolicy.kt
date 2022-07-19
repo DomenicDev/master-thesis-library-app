@@ -2,7 +2,7 @@ package de.cassisi.lending.loan
 
 import de.cassisi.lending.student.StudentId
 
-class LoanCreationPolicy(private val repository: LoanCreationStudentRepository) {
+class LoanCreationPolicy(private val repository: LoanCreationPolicyRepository) {
 
     companion object {
         private const val MAX_CHARGES = 20
@@ -10,7 +10,7 @@ class LoanCreationPolicy(private val repository: LoanCreationStudentRepository) 
 
     fun validateLoanCreationPolicy(studentId: StudentId) {
         // load student from repository
-        val student = repository.findById(studentId)
+        val student = repository.findStudentById(studentId)
 
         // read fields
         val matriculated = student.getMatriculationStatus().status

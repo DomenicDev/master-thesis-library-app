@@ -7,7 +7,7 @@ class ExtendLoanExecutor(private val repository: ExtendLoanRepository) : ExtendL
     override fun execute(command: LoanCommand.ExtendLoan) {
         // load loan from repository
         val loanId = command.loanId
-        val loan = repository.findById(loanId)
+        val loan = repository.getById(loanId)
 
         // execute loan extension
         loan.execute(command)
