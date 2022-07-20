@@ -8,9 +8,9 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
     AbstractEventStoreRepository<BorrowableBook, BookId, BookEvent, SerializableBookEvent>(client) {
 
     companion object {
-        private const val BOOK_ADDED = "book-added"
-        private const val BOOK_BORROWED = "book-borrowed"
-        private const val BOOK_RETURNED = "book-returned"
+        private const val BOOK_ADDED = "borrowable-book-added"
+        private const val BOOK_BORROWED = "borrowable-book-borrowed"
+        private const val BOOK_RETURNED = "borrowable-book-returned"
     }
 
     override fun createEmptyAggregate(id: BookId, version: Version): BorrowableBook {
@@ -43,7 +43,7 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
     }
 
     override fun toStreamName(id: BookId): String {
-        return "borrowablebook-${id.id}"
+        return "borrowable-book-${id.id}"
     }
 
     override fun getEventTypeName(event: BookEvent): String {
