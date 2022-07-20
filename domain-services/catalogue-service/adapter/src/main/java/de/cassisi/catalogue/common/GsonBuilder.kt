@@ -4,6 +4,7 @@ import com.eventstore.dbclient.EventData
 import com.eventstore.dbclient.EventDataBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
 object GsonBuilder {
 
@@ -12,7 +13,9 @@ object GsonBuilder {
     fun buildEventData(eventType: String, event: Any): EventData {
         val json = gson.toJson(event)
         val bytes = json.encodeToByteArray()
-        return EventDataBuilder.json(eventType, bytes).build()
+        return EventDataBuilder
+            .json(UUID.randomUUID(), eventType, bytes)
+            .build()
     }
 
     // thanks to: https://stackoverflow.com/questions/33381384/how-to-use-typetoken-generics-with-gson-in-kotlin

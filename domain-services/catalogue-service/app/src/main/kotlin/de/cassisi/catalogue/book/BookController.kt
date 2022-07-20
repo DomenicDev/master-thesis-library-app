@@ -1,16 +1,16 @@
 package de.cassisi.catalogue.book
 
+import com.eventstore.dbclient.*
 import de.cassisi.catalogue.campus.CampusId
 import de.cassisi.catalogue.metadata.MetadataId
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.boot.CommandLineRunner
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("book")
-class BookController(private val bookCommandHandler: BookCommandHandler) {
+class BookController(private val bookCommandHandler: BookCommandHandler, private val repo: BookRepository, private val client: EventStoreDBClient) {
 
     @PostMapping
     fun createBook(@RequestBody request: AddBookRequest) {
@@ -24,6 +24,33 @@ class BookController(private val bookCommandHandler: BookCommandHandler) {
         )
 
         bookCommandHandler.handle(createCommand)
+        println(bookId)
     }
+
+    @PutMapping
+    fun updateSignature(@RequestBody request: UpdateSignatureRequest): ResponseEntity<String> {
+
+        val command = BookCommand.UpdateBookSignature(
+            BookId(request.bookId),
+            Signature(request.signature)
+        )
+
+        bookCommandHandler.handle(command)
+        return ResponseEntity.ok("Updated!")
+    }
+
+    @GetMapping
+    fun get(@RequestParam id: UUID): ResponseEntity<String> {
+        val book = repo.getById(BookId(id))
+        println(book.getSignature())
+        println(book.getCampusId())
+        println(book.getMetadataId())
+        println()
+        return ResponseEntity.ok(book.toString())
+    }
+
+
+    data class UpdateSignatureRequest(val bookId: UUID, val signature: String)
+
 
 }

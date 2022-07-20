@@ -76,8 +76,8 @@ class BookEventStoreRepository(client: EventStoreDBClient) : BookRepository, Abs
         }
     }
 
-    override fun toStreamName(bookId: BookId): String {
-        return "book-${bookId.id}"
+    override fun toStreamName(id: BookId): String {
+        return "book-${id.id}"
     }
 
     override fun save(aggregate: Book) {
