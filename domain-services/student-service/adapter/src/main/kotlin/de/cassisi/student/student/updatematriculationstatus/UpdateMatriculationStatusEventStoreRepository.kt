@@ -1,0 +1,6 @@
+package de.cassisi.student.student.updatematriculationstatus
+
+import de.cassisi.student.student.BaseStudentRepository
+import de.cassisi.student.student.StudentEventStoreRepository
+
+class UpdateMatriculationStatusEventStoreRepository(repository: StudentEventStoreRepository) : UpdateMatriculationStatusRepository, BaseStudentRepository(repository)
