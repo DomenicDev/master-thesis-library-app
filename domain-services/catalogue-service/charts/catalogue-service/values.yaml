@@ -1,0 +1,8 @@
+author: cassisid
+app: catalogue-service
+eventstoreName: catalogue-eventstore
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-service:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+connectionString: esdb://catalogue-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000

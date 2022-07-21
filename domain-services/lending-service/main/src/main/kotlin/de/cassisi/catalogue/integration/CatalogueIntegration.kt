@@ -73,7 +73,6 @@ class CatalogueIntegration(
         } catch (e: Exception) {
             logger.warn("event could not be processed due to ${e.message}")
         }
-
     }
 
     private fun bookSubscriptionOptions(): SubscribeToAllOptions {
