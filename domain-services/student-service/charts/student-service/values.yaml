@@ -1,0 +1,8 @@
+author: cassisid
+app: student-service
+eventstoreName: student-eventstore
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/student-service:latest
+requestMem: 128Mi
+limitMem: 512Mi
+connectionString: esdb://student-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000

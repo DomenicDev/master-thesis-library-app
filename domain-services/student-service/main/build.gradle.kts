@@ -5,6 +5,7 @@ plugins {
     id("de.cassisi.student.kotlin-infrastructure-conventions")
     id("org.springframework.boot") version "2.7.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id ("com.google.cloud.tools.jib") version "3.2.1"
     kotlin("plugin.spring") version "1.6.21"
 }
 
