@@ -1,0 +1,7 @@
+resources:
+  limits:
+    memory: 1024Mi
+readinessProbe:
+  initialDelaySeconds: 20
+livelnessProbe:
+  initialDelaySeconds: 20

@@ -1,0 +1,1 @@
+helm install checkpoint-redis --values values.yaml bitnami/redis

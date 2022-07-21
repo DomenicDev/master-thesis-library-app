@@ -1,0 +1,1 @@
+helm install kafka --values values.yaml bitnami/kafka
