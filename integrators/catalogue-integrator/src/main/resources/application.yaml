@@ -1,0 +1,18 @@
+eventstore:
+  connection-string: "esdb://catalogue-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
+
+checkpoint-storage:
+  redis:
+    host: "checkpoint-redis-master"
+    port: 6379
+
+spring:
+  kafka:
+    bootstrap-servers:
+      - "kafka:9092"
+
+book-prefix: "book-"
+
+book-topic:
+  name: "books"
+  partitions: 1

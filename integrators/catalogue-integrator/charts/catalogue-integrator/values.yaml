@@ -1,0 +1,7 @@
+author: cassisid
+app: catalogue-integrator
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-integrator:latest
+requestMem: 128Mi
+limitMem: 1024Mi
+connectionString: esdb://catalogue-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000
