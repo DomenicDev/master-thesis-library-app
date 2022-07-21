@@ -1,2 +1,3 @@
 architecture: standalone
-auth.enabled: false
+auth.enabled: true
+auth.password: "Y6R8zL83El"
