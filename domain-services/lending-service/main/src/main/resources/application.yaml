@@ -7,6 +7,12 @@ checkpoint-store:
     host: "localhost"
     port: 49153
 
+spring:
+  kafka:
+    bootstrap-servers:
+      - "kafka:9092"
+    consumer:
+      group-id: "lending-service"
 
 # INTEGRATION CONFIGURATION WITH OTHER SERVICES
 integration:

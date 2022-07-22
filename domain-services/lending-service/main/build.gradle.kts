@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("de.cassisi.catalogue.kotlin-application-conventions")
     id("de.cassisi.catalogue.kotlin-infrastructure-conventions")
+    id ("com.google.cloud.tools.jib") version "3.2.1"
     id("org.springframework.boot") version "2.7.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("plugin.spring") version "1.6.21"

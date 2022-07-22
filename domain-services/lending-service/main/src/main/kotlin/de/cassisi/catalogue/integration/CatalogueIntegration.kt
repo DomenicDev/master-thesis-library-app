@@ -68,7 +68,7 @@ class CatalogueIntegration(
         val json = String(eventData)
         try {
             if (eventType == ET_BOOK_ADDED) {
-                eventHandler.handle(Gson().fromJson(json))
+                eventHandler.handleBookAdded(Gson().fromJson(json))
             }
         } catch (e: Exception) {
             logger.warn("event could not be processed due to ${e.message}")

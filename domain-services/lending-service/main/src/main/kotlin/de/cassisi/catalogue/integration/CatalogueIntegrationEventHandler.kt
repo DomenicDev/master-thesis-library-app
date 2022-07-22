@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component
 class CatalogueIntegrationEventHandler(private val addBook: AddBook) {
 
 
-    fun handle(event: BookAddedToCatalogueSerializable) {
-        val command = BookCommand.AddBook(BookId(event.bookId))
+    fun handleBookAdded(bookId: BookId) {
+        // we add our own model of book
+        val command = BookCommand.AddBook(bookId)
         addBook.execute(command)
     }
 
