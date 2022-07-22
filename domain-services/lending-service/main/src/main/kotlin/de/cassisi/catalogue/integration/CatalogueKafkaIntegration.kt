@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class CatalogueKafkaIntegration(private val eventHandler: CatalogueIntegrationEventHandler, private val checkpointStorage: CheckpointStorage) {
+class CatalogueKafkaIntegration(private val eventHandler: CatalogueIntegrationEventHandler) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(CatalogueKafkaIntegration::class.java)
