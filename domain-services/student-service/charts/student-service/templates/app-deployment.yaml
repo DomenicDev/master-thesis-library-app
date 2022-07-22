@@ -26,8 +26,10 @@ spec:
               value: {{ .Values.connectionString }}
           resources:
             limits:
+              cpu: {{ .Values.limitCPU }}
               memory: {{ .Values.limitMem }}
             requests:
+              cpu: {{ .Values.requestCPU }}
               memory: {{ .Values.requestMem }}
           livenessProbe:
             initialDelaySeconds: 15
