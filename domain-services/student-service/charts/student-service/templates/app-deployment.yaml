@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.author }}-{{ .Values.app }}
+  name: {{ .Values.app }}
   labels:
     app: {{ .Values.app }}
     author: {{ .Values.author }}
@@ -13,7 +13,7 @@ spec:
       author: {{ .Values.author }}
   template:
     metadata:
-      name: {{ .Values.author }}-{{ .Values.app }}
+      name: {{ .Values.app }}
       labels:
         app: {{ .Values.app }}
         author: {{ .Values.author }}
