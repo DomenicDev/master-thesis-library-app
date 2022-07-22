@@ -1,0 +1,19 @@
+eventstore:
+  connection-string: "esdb://student-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
+
+checkpoint-storage:
+  redis:
+    host: "checkpoint-redis-master"
+    port: 6379
+    password: "Y6R8zL83El"
+
+spring:
+  kafka:
+    bootstrap-servers:
+      - "kafka:9092"
+
+stream-prefix: "student-"
+
+student-topic:
+  name: "students"
+  partitions: 1
