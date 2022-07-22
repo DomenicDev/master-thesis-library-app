@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class StudentIntegrationEventHandler(
-    @Value("\${book-topic.name}") private val bookTopicName: String,
+    @Value("\${student-topic.name}") private val topicName: String,
     private val template: KafkaTemplate<String, String>) {
 
     private val gson = Gson()
@@ -18,7 +18,7 @@ class StudentIntegrationEventHandler(
         val message = MessageBuilder
             .withPayload(json)
             .setHeader(KafkaHeaders.MESSAGE_KEY, streamId)
-            .setHeader(KafkaHeaders.TOPIC, bookTopicName)
+            .setHeader(KafkaHeaders.TOPIC, topicName)
             .setHeader("eventId", eventId)
             .setHeader("eventType", eventType)
             .build()
