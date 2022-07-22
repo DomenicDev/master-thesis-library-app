@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.eventstoreName }}
+  labels:
+    app: {{ .Values.eventstoreName }}
+    author: {{ .Values.author }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.eventstoreName }}
+      author: {{ .Values.author }}
+  serviceName: {{ .Values.eventstoreName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.eventstoreName }}
+        author: {{ .Values.author }}
+    spec:
+      enableServiceLinks: false # TO AVOID CONFLICT WITH KUBERNETES
+      containers:
+        - name: eventstore
+          image: eventstore/eventstore:21.10.5-buster-slim
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: 1024Mi
+            requests:
+              memory: 256Mi
+          ports:
+            - containerPort: 2113
+              name: http-ext
+          volumeMounts:
+            - mountPath: /var/lib/eventstore
+              name: data
+          env:
+            - name: EVENTSTORE_RUN_PROJECTIONS
+              value: All
+            - name: EVENTSTORE_INSECURE
+              value: "true"
+      volumes:
+        - name: data
+          emptyDir: {}

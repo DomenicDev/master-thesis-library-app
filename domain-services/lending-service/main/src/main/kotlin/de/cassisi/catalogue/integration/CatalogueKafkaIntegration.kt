@@ -17,14 +17,14 @@ class CatalogueKafkaIntegration(private val eventHandler: CatalogueIntegrationEv
         private val logger = LoggerFactory.getLogger(CatalogueKafkaIntegration::class.java)
 
         // EVENT TYPES
-        private val BOOK_ADDED = "book-added"
+        private const val BOOK_ADDED = "book-added"
     }
 
     private val gson = Gson()
 
     @KafkaListener(topics = ["books"])
     fun processMessage(
-        @Header(KafkaHeaders.MESSAGE_KEY) key: String,
+        @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) key: String,
         @Header("eventId") eventId: String,
         @Header("eventType") eventType: String,
         @Payload payload: String) {

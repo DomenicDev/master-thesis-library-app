@@ -1,0 +1,8 @@
+author: cassisid
+app: lending-service
+eventstoreName: lending-eventstore
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/lending-service:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+connectionString: esdb://lending-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000

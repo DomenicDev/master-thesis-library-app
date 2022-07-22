@@ -2,11 +2,6 @@
 eventstore:
   connection-string: "esdb://127.0.0.1:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
 
-checkpoint-store:
-  redis:
-    host: "localhost"
-    port: 49153
-
 spring:
   kafka:
     bootstrap-servers:
@@ -14,9 +9,4 @@ spring:
     consumer:
       group-id: "lending-service"
 
-# INTEGRATION CONFIGURATION WITH OTHER SERVICES
-integration:
-  catalogue:
-    book-stream-prefix: "book-"
-    eventstore:
-      connection-string: "esdb://127.0.0.1:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
+
