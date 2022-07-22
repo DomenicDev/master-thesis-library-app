@@ -2,6 +2,8 @@ author: cassisid
 app: student-integrator
 replicaCount: 1
 image: docker.informatik.hs-furtwangen.de/cassisid/student-integrator:latest
+requestCPU: 50m
+limitCPU: 250m
 requestMem: 128Mi
 limitMem: 1024Mi
 connectionString: esdb://student-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000
