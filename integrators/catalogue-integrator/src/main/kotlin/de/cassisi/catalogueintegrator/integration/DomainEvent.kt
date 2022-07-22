@@ -1,9 +1,7 @@
-package de.cassisi.catalogue.integration
+package de.cassisi.catalogueintegrator.integration
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
-
-sealed interface CatalogueBookEvents
 
 data class BookAddedToCatalogueSerializable(
     @SerializedName("bookId")       val bookId: UUID,
@@ -11,4 +9,3 @@ data class BookAddedToCatalogueSerializable(
     @SerializedName("campusId")     val campusId: UUID,
     @SerializedName("signature")    val signature: String
 )
-

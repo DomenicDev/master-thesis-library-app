@@ -2,6 +2,7 @@ package de.cassisi.catalogueintegrator.integration
 
 import com.eventstore.dbclient.*
 import com.google.gson.Gson
+import de.cassisi.catalogueintegrator.checkpoint.CheckpointStorage
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
@@ -14,6 +15,7 @@ class EventStoreSubscriber(
     @Value("\${book-prefix}")private val  bookPrefix: String) : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(EventStoreSubscriber::class.java)
+    private val gson = Gson()
 
     companion object {
         private const val ET_BOOK_ADDED = "book-added"
@@ -44,13 +46,17 @@ class EventStoreSubscriber(
     }
 
     private fun handleEvent(event: ResolvedEvent) {
+        val eventId = event.originalEvent.eventId.toString()
         val eventType = event.originalEvent.eventType
         val eventData = event.originalEvent.eventData
         val streamId = event.originalEvent.streamId
         val json = String(eventData)
+        logger.info("Handle Event: $streamId $eventType $json")
         try {
             if (eventType == ET_BOOK_ADDED) {
-                eventHandler.handleBookAdded(streamId, json)
+                val domainEvent = gson.fromJson(json, BookAddedToCatalogueSerializable::class.java)
+                val payload = BookAddedIE(domainEvent.bookId.toString())
+                eventHandler.handle(streamId, eventId, eventType, payload)
             }
         } catch (e: Exception) {
             logger.warn("event could not be processed due to ${e.message}")
@@ -87,4 +93,5 @@ class EventStoreSubscriber(
     }
 
 }
+
 

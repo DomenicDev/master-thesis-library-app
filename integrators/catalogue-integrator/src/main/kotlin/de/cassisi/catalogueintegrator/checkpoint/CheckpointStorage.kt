@@ -1,4 +1,4 @@
-package de.cassisi.catalogueintegrator.integration
+package de.cassisi.catalogueintegrator.checkpoint
 
 interface CheckpointStorage {
 

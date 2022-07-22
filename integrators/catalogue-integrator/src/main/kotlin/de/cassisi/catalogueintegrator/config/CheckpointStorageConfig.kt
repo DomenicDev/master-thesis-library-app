@@ -1,7 +1,7 @@
 package de.cassisi.catalogueintegrator.config
 
-import de.cassisi.catalogueintegrator.integration.CheckpointStorage
-import de.cassisi.catalogueintegrator.integration.RedisCheckpointStorage
+import de.cassisi.catalogueintegrator.checkpoint.CheckpointStorage
+import de.cassisi.catalogueintegrator.checkpoint.RedisCheckpointStorage
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,9 +14,10 @@ class CheckpointStorageConfig {
     fun jedis(
         @Value("\${checkpoint-storage.redis.host}") host: String,
         @Value("\${checkpoint-storage.redis.port}") port: Int,
+        @Value("\${checkpoint-storage.redis.password}") password: String,
     ): Jedis {
         val jedis = Jedis(host, port)
-        jedis.auth("Y6R8zL83El")
+        jedis.auth(password)
         return jedis
     }
 
