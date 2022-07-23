@@ -1,0 +1,10 @@
+# LOCAL CONFIGURATION FOR THIS SERVICE
+eventstore:
+  connection-string: "esdb://charges-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
+
+spring:
+  kafka:
+    bootstrap-servers:
+      - "kafka:9092"
+    consumer:
+      group-id: "charging-service"
