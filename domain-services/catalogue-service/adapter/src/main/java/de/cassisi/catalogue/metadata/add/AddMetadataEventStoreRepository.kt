@@ -1,0 +1,7 @@
+package de.cassisi.catalogue.metadata.add
+
+import de.cassisi.catalogue.metadata.AddMetadataRepository
+import de.cassisi.catalogue.metadata.BaseMetadataEventStoreRepository
+import de.cassisi.catalogue.metadata.MetadataEventStoreRepository
+
+class AddMetadataEventStoreRepository(repository: MetadataEventStoreRepository): AddMetadataRepository, BaseMetadataEventStoreRepository(repository)

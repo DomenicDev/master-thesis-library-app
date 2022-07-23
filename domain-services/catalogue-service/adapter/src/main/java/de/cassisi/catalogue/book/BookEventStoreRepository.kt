@@ -24,7 +24,7 @@ class BookEventStoreRepository(client: EventStoreDBClient) : BookRepository, Abs
             is BookAddedToCatalogue -> {
                 return BookAddedToCatalogueSerializable(
                     event.bookId.id,
-                    event.metadataId.id,
+                    event.metadataId.uuid,
                     event.campusId.campusId,
                     event.signature.signature)
             }
