@@ -1,0 +1,9 @@
+author: cassisid
+app: charging-integrator
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/charging-integrator:latest
+requestCPU: 150m
+limitCPU: 1500m
+requestMem: 128Mi
+limitMem: 512Mi
+connectionString: esdb://charging-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000
