@@ -25,6 +25,6 @@ interface Loan : EventSourcedAggregate<LoanId, LoanEvent> {
 
     fun execute(command: LoanCommand.ExtendLoan)
 
-    fun execute(command: LoanCommand.ReturnBook)
+    fun execute(command: LoanCommand.CloseLoan)
 
 }

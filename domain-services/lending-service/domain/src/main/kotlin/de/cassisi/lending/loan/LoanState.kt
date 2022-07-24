@@ -32,7 +32,7 @@ class LoanState {
         this.numberOfExtensions = event.extensions
     }
 
-    fun handle(event: LoanReturned) {
+    fun handle(event: LoanClosed) {
         this.returnDate = event.returnDate
         this.returned = true
         this.active = false

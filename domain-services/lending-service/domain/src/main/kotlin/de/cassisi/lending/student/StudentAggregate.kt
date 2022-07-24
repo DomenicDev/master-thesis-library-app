@@ -5,10 +5,6 @@ import de.cassisi.lending.common.Version
 
 class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate<StudentId, StudentEvent>(id, version) {
 
-    companion object {
-        private const val CHARGE_INCREMENT = 2
-    }
-
     private lateinit var status: MatriculationStatus
     private lateinit var charges: Charges
 
@@ -20,12 +16,11 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         return this.charges
     }
 
-    override fun execute(command: ChargeStudentCommand) {
-        val currentCharges = getCharges().amount
-        val newChargesAmount = currentCharges + CHARGE_INCREMENT
-        val event = StudentCharged(
+    override fun execute(command: UpdateStudentChargesCommand) {
+        val newCharges = command.currentCharges
+        val event = StudentChargesChanged(
             getId(),
-            Charges(newChargesAmount)
+            newCharges
         )
         registerEvent(event)
     }
@@ -38,20 +33,11 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         registerEvent(event)
     }
 
-    override fun execute(command: ResetChargesCommand) {
-        val event = StudentCharged(
-            getId(),
-            Charges(0)
-        )
-        registerEvent(event)
-    }
-
     override fun handleEvent(event: StudentEvent) {
         when (event) {
             is StudentCreated -> handle(event)
             is StudentMatriculatedChanged -> handle(event)
-            is StudentCharged -> handle(event)
-            is StudentChargesReset -> handle(event)
+            is StudentChargesChanged -> handle(event)
         }
     }
 
@@ -64,12 +50,8 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         this.status = event.matriculationStatus
     }
 
-    private fun handle(event: StudentCharged) {
+    private fun handle(event: StudentChargesChanged) {
         this.charges = event.newCharges
-    }
-
-    private fun handle(event: StudentChargesReset) {
-        this.charges = event.charges
     }
 
 }

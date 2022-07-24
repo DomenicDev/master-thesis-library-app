@@ -21,7 +21,7 @@ data class SerializableLoanExtended(
     @SerializedName("extensions")   val extensions: Int
 ) : SerializableLoanEvent
 
-data class SerializableLoanReturned(
+data class SerializableLoanClosed(
     @SerializedName("loanId")       val loanId: UUID,
     @SerializedName("returnDate")   val returnDate: LocalDate
 ) : SerializableLoanEvent

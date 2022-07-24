@@ -10,8 +10,7 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) : AbstractEve
     companion object {
         private const val STUDENT_ADDED = "student-added"
         private const val STUDENT_MATRICULATION_CHANGED = "student-matriculation-changed"
-        private const val STUDENT_CHARGED = "student-charged"
-        private const val STUDENT_CHARGES_RESET = "student-charges-reset"
+        private const val STUDENT_CHARGE_CHANGED = "student-charge-changed"
     }
 
     override fun createEmptyAggregate(id: StudentId, version: Version): Student {
@@ -29,13 +28,9 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) : AbstractEve
                 event.studentId.uuid,
                 event.matriculationStatus.status
             )
-            is StudentCharged -> SerializableStudentCharged(
+            is StudentChargesChanged -> SerializableStudentChargesChanged(
                 event.student.uuid,
                 event.newCharges.amount
-            )
-            is StudentChargesReset -> SerializableStudentChargesReset(
-                event.student.uuid,
-                event.charges.amount
             )
         }
     }
@@ -51,13 +46,9 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) : AbstractEve
                 StudentId(raw.studentId),
                 MatriculationStatus(raw.status)
             )
-            is SerializableStudentCharged -> StudentCharged(
+            is SerializableStudentChargesChanged -> StudentChargesChanged(
                 StudentId(raw.studentId),
                 Charges(raw.newCharges)
-            )
-            is SerializableStudentChargesReset -> StudentChargesReset(
-                StudentId(raw.studentId),
-                Charges(raw.charges)
             )
         }
     }
@@ -66,8 +57,7 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) : AbstractEve
         return when (eventType) {
             STUDENT_ADDED -> SerializableStudentCreated::class.java
             STUDENT_MATRICULATION_CHANGED -> SerializableStudentMatriculationChanged::class.java
-            STUDENT_CHARGED -> SerializableStudentCharged::class.java
-            STUDENT_CHARGES_RESET -> SerializableStudentChargesReset::class.java
+            STUDENT_CHARGE_CHANGED -> SerializableStudentMatriculationChanged::class.java
             else -> throw IllegalArgumentException()
         }
     }
@@ -80,8 +70,8 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) : AbstractEve
         return when (event) {
             is StudentCreated -> STUDENT_ADDED
             is StudentMatriculatedChanged -> STUDENT_MATRICULATION_CHANGED
-            is StudentCharged -> STUDENT_CHARGED
-            is StudentChargesReset -> STUDENT_CHARGES_RESET
+            is StudentChargesChanged -> STUDENT_CHARGE_CHANGED
         }
     }
+
 }

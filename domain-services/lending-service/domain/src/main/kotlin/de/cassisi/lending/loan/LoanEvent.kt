@@ -21,7 +21,7 @@ data class LoanExtended(
     val extensions: Int
 ) : LoanEvent
 
-data class LoanReturned(
+data class LoanClosed(
     val loanId: LoanId,
     val returnDate: LocalDate
 ) : LoanEvent

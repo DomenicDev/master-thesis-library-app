@@ -18,7 +18,7 @@ sealed interface LoanCommand {
         val loanId: LoanId
     )
 
-    data class ReturnBook(
+    data class CloseLoan(
         val loanId: LoanId,
         val returnDate: LocalDate
     )

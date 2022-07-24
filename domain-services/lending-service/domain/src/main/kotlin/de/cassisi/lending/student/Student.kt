@@ -8,10 +8,8 @@ interface Student : EventSourcedAggregate<StudentId, StudentEvent> {
 
     fun getCharges(): Charges
 
-    fun execute(command: ChargeStudentCommand)
+    fun execute(command: UpdateStudentChargesCommand)
 
     fun execute(command: UpdateMatriculationStatusCommand)
-
-    fun execute(command: ResetChargesCommand)
 
 }

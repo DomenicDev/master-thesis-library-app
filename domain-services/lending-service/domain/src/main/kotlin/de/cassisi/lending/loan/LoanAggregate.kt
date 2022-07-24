@@ -17,7 +17,7 @@ class LoanAggregate(id: LoanId, version: Version) : Loan, BaseAggregate<LoanId, 
     override fun handleEvent(event: LoanEvent) {
         when (event) {
             is LoanCreated -> state.handle(event)
-            is LoanReturned -> state.handle(event)
+            is LoanClosed -> state.handle(event)
             is LoanExtended -> state.handle(event)
         }
     }
@@ -76,14 +76,14 @@ class LoanAggregate(id: LoanId, version: Version) : Loan, BaseAggregate<LoanId, 
         registerEvent(event)
     }
 
-    override fun execute(command: LoanCommand.ReturnBook) {
+    override fun execute(command: LoanCommand.CloseLoan) {
         // validate if loan was already returned
         if (getState().returned) {
             throw LoanAlreadyReturned(getId())
         }
         val returnDate = command.returnDate
 
-        val event = LoanReturned(
+        val event = LoanClosed(
             getId(),
             returnDate
         )

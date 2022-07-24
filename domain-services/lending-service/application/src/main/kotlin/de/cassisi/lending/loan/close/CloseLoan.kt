@@ -4,6 +4,6 @@ import de.cassisi.lending.loan.LoanCommand
 
 interface CloseLoan {
 
-    fun execute(command: LoanCommand.ReturnBook)
+    fun execute(command: LoanCommand.CloseLoan)
 
 }

@@ -1,7 +1,7 @@
 package de.cassisi.lending.student
 
 import com.google.gson.annotations.SerializedName
-import java.util.UUID
+import java.util.*
 
 sealed interface SerializableStudentEvent
 
@@ -16,12 +16,8 @@ data class SerializableStudentMatriculationChanged(
     @SerializedName("matriculationStatus") val status: Boolean
 ): SerializableStudentEvent
 
-data class SerializableStudentCharged(
+data class SerializableStudentChargesChanged(
     @SerializedName("studentId") val studentId: UUID,
     @SerializedName("newCharges") val newCharges: Int
 ): SerializableStudentEvent
 
-data class SerializableStudentChargesReset(
-    @SerializedName("studentId") val studentId: UUID,
-    @SerializedName("charges") val charges: Int
-): SerializableStudentEvent

@@ -63,19 +63,19 @@ class EventStoreSubscriber(
                     val createdEvent = gson.fromJson(eventType, SerializableStudentChargeAccountCreated::class.java)
                     val studentId = createdEvent.id
                     val charges = createdEvent.charges
-                    sendIntegrationEvent(streamId, eventId, eventType, studentId, charges)
+                    sendIntegrationEvent(streamId, eventId, studentId, charges)
                 }
                 STUDENT_CHARGED -> {
                     val chargedEvent = gson.fromJson(eventType, SerializableStudentCharged::class.java)
                     val studentId = chargedEvent.studentId
                     val charges = chargedEvent.currentCharges
-                    sendIntegrationEvent(streamId, eventId, eventType, studentId, charges)
+                    sendIntegrationEvent(streamId, eventId, studentId, charges)
                 }
                 STUDENT_CHARGES_PAID -> {
                     val paidEvent = gson.fromJson(eventType, SerializableStudentChargesPaid::class.java)
                     val studentId = paidEvent.studentId
                     val charges = paidEvent.currentCharges
-                    sendIntegrationEvent(streamId, eventId, eventType, studentId, charges)
+                    sendIntegrationEvent(streamId, eventId, studentId, charges)
                 }
             }
 
@@ -84,10 +84,10 @@ class EventStoreSubscriber(
         }
     }
 
-    private fun sendIntegrationEvent(streamId: String, eventId: String, eventType: String, studentId: UUID, charges: Int) {
+    private fun sendIntegrationEvent(streamId: String, eventId: String, studentId: UUID, charges: Int) {
         val integrationEvent = SimpleChargingIntegrationEvent(studentId, charges)
         val json = gson.toJson(integrationEvent)
-        eventHandler.sendJson(streamId, eventId, eventType, json)
+        eventHandler.sendJson(streamId, eventId, "student-charges-changed", json)
     }
 
     private fun storeCheckpoint(event: ResolvedEvent) {

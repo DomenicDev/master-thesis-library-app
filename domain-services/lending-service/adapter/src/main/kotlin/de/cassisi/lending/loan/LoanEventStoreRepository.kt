@@ -11,7 +11,7 @@ class LoanEventStoreRepository(client: EventStoreDBClient) : AbstractEventStoreR
     companion object {
         private const val LOAN_CREATED = "loan-created"
         private const val LOAN_EXTENDED = "loan-extended"
-        private const val LOAN_RETURNED = "loan-returned"
+        private const val LOAN_CLOSED = "loan-closed"
     }
 
     override fun createEmptyAggregate(id: LoanId, version: Version): Loan {
@@ -33,7 +33,7 @@ class LoanEventStoreRepository(client: EventStoreDBClient) : AbstractEventStoreR
                 event.endDate,
                 event.extensions
             )
-            is LoanReturned -> SerializableLoanReturned(
+            is LoanClosed -> SerializableLoanClosed(
                 event.loanId.uuid,
                 event.returnDate
             )
@@ -55,7 +55,7 @@ class LoanEventStoreRepository(client: EventStoreDBClient) : AbstractEventStoreR
                 raw.endDate,
                 raw.extensions
             )
-            is SerializableLoanReturned -> LoanReturned(
+            is SerializableLoanClosed -> LoanClosed(
                 LoanId(raw.loanId),
                 raw.returnDate
             )
@@ -66,7 +66,7 @@ class LoanEventStoreRepository(client: EventStoreDBClient) : AbstractEventStoreR
         return when (eventType) {
             LOAN_CREATED -> SerializableLoanCreated::class.java
             LOAN_EXTENDED -> SerializableLoanExtended::class.java
-            LOAN_RETURNED -> SerializableLoanExtended::class.java
+            LOAN_CLOSED -> SerializableLoanExtended::class.java
             else -> throw IllegalArgumentException()
         }
     }
@@ -75,7 +75,7 @@ class LoanEventStoreRepository(client: EventStoreDBClient) : AbstractEventStoreR
         return when (event) {
             is LoanCreated -> LOAN_CREATED
             is LoanExtended -> LOAN_EXTENDED
-            is LoanReturned -> LOAN_RETURNED
+            is LoanClosed -> LOAN_CLOSED
         }
     }
 

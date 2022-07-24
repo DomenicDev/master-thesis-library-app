@@ -13,12 +13,7 @@ data class StudentMatriculatedChanged(
     val matriculationStatus: MatriculationStatus
 ) : StudentEvent
 
-data class StudentCharged(
+data class StudentChargesChanged(
     val student: StudentId,
     val newCharges: Charges
-): StudentEvent
-
-data class StudentChargesReset(
-    val student: StudentId,
-    val charges: Charges
 ): StudentEvent
