@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "lending-service"
-include("main", "domain", "application", "adapter", "utilities")
+include("main", "domain", "application", "adapter")

@@ -8,9 +8,9 @@ sealed interface Book: EventSourcedAggregate<BookId, BookEvent> {
 
     fun isAvailableForLoan(): Boolean
 
-    fun borrowBook(studentId: StudentId, startDate: LocalDate, policy: BookBorrowPolicy)
+    fun borrowBook(studentId: StudentId, startDate: LocalDate, policy: BorrowBookPolicy)
 
-    fun extendCurrentLoan(policy: BookExtensionPolicy)
+    fun extendCurrentLoan(policy: ExtendLoanPolicy)
 
     fun returnBook(returnDate: LocalDate)
 

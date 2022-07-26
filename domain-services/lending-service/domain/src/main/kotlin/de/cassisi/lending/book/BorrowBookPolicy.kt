@@ -2,7 +2,7 @@ package de.cassisi.lending.book
 
 import de.cassisi.lending.student.StudentId
 
-class BookBorrowPolicy(private val repository: BookBorrowPolicyRepository) {
+class BorrowBookPolicy(private val repository: BorrowBookPolicyRepository) {
 
     companion object {
         private const val MAX_CHARGES = 20

@@ -12,7 +12,7 @@ object BookFactory {
     fun new(command: BookCommand.AddBook): Book {
         val bookId = command.bookId
         val book = BookAggregate(bookId, Versions.init())
-        val event = BorrowableBookAdded(bookId)
+        val event = BookAdded(bookId)
         book.registerEvent(event)
         return book
     }

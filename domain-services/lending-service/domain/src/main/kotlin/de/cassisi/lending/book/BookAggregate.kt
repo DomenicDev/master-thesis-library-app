@@ -14,7 +14,7 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
         return this.currentLoan == null
     }
 
-    override fun borrowBook(studentId: StudentId, startDate: LocalDate, policy: BookBorrowPolicy) {
+    override fun borrowBook(studentId: StudentId, startDate: LocalDate, policy: BorrowBookPolicy) {
         if (!isAvailableForLoan()) {
             throw BookAlreadyLoanException(getId())
         }
@@ -35,7 +35,7 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
         registerEvent(bookBorrowedEvent)
     }
 
-    override fun extendCurrentLoan(policy: BookExtensionPolicy) {
+    override fun extendCurrentLoan(policy: ExtendLoanPolicy) {
         if (currentLoan == null) {
             throw IllegalStateException("Book is currently not borrowed.")
         }
@@ -83,14 +83,14 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
 
     override fun handleEvent(event: BookEvent) {
         when (event) {
-            is BorrowableBookAdded -> handle(event)
+            is BookAdded -> handle(event)
             is BookBorrowed -> handle(event)
             is LoanExtended -> handle(event)
             is BookReturned -> handle(event)
         }
     }
 
-    private fun handle(event: BorrowableBookAdded) {
+    private fun handle(event: BookAdded) {
         this.currentLoan = null
     }
 

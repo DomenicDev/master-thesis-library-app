@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 sealed interface BookEvent
 
-data class BorrowableBookAdded(
+data class BookAdded(
     val bookId: BookId
 ): BookEvent
 

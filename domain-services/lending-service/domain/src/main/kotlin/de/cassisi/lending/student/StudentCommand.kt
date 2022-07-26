@@ -4,6 +4,8 @@ sealed interface StudentCommand
 
 data class CreateStudentCommand(
     val studentId: StudentId,
+    val matriculationStatus: MatriculationStatus,
+    val charges: Charges
 ): StudentCommand
 
 data class UpdateStudentChargesCommand(

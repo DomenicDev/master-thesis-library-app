@@ -9,8 +9,8 @@ object StudentFactory {
         val aggregate = StudentAggregate(command.studentId, Versions.init())
         val createdEvent = StudentCreated(
             command.studentId,
-            MatriculationStatus(false),
-            Charges(0)
+            command.matriculationStatus,
+            command.charges
         )
         aggregate.registerEvent(createdEvent)
         return aggregate

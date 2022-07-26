@@ -2,7 +2,7 @@ package de.cassisi.lending.book
 
 import de.cassisi.lending.student.StudentId
 
-class BookExtensionPolicy(private val repository: BookExtensionPolicyRepository) {
+class ExtendLoanPolicy(private val repository: ExtendLoanPolicyRepository) {
 
     companion object {
         private const val MAX_CHARGES = 20

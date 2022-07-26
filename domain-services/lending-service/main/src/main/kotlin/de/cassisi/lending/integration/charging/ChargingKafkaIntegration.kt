@@ -1,10 +1,9 @@
 package de.cassisi.lending.integration.charging
 
 import com.google.gson.Gson
-import de.cassisi.lending.integration.catalogue.CatalogueKafkaIntegration
-import de.cassisi.lending.service.StudentService
 import de.cassisi.lending.student.Charges
 import de.cassisi.lending.student.StudentId
+import de.cassisi.lending.student.StudentService
 import de.cassisi.lending.student.UpdateStudentChargesCommand
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
@@ -18,7 +17,7 @@ import java.util.*
 class ChargingKafkaIntegration(private val studentService: StudentService) {
 
     companion object {
-        private val logger = LoggerFactory.getLogger(CatalogueKafkaIntegration::class.java)
+        private val logger = LoggerFactory.getLogger(ChargingKafkaIntegration::class.java)
     }
 
     private val gson = Gson()

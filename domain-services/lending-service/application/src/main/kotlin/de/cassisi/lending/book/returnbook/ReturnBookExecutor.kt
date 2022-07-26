@@ -7,7 +7,7 @@ class ReturnBookExecutor(private val repository: ReturnBookRepository) : ReturnB
     override fun execute(command: BookCommand.ReturnBookCommand) {
         val bookId = command.bookId
         val book = repository.getById(bookId)
-        book.execute(command)
+        book.returnBook(command.returnDate)
         repository.save(book)
     }
 }

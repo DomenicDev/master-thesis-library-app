@@ -1,5 +1,8 @@
 package de.cassisi.lending.book
 
+import de.cassisi.lending.student.StudentId
+import java.time.LocalDate
+
 
 sealed interface BookCommand {
 
@@ -9,10 +12,13 @@ sealed interface BookCommand {
 
     data class BorrowBookCommand(
         val bookId: BookId,
+        val studentId: StudentId,
+        val startDate: LocalDate
     ): BookCommand
 
     data class ReturnBookCommand(
-        val bookId: BookId
+        val bookId: BookId,
+        val returnDate: LocalDate
     ): BookCommand
 
     data class ExtendLoan(

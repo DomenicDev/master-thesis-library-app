@@ -1,6 +1,6 @@
 # LOCAL CONFIGURATION FOR THIS SERVICE
 eventstore:
-  connection-string: "esdb://127.0.0.1:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
+  connection-string: "esdb://lending-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
 
 spring:
   kafka:

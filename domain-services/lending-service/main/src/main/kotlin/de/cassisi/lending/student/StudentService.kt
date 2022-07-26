@@ -1,4 +1,4 @@
-package de.cassisi.lending.service
+package de.cassisi.lending.student
 
 import de.cassisi.lending.student.CreateStudentCommand
 import de.cassisi.lending.student.UpdateMatriculationStatusCommand
@@ -15,7 +15,8 @@ class StudentService(
     private val updateMatriculationStatus: UpdateMatriculationStatus
 ) {
 
-    fun registerStudent(command: CreateStudentCommand) {
+    fun registerStudent(studentId: StudentId, status: MatriculationStatus, charges: Charges) {
+        val command = CreateStudentCommand(studentId, status, charges)
         registerStudent.execute(command)
     }
 

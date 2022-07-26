@@ -2,11 +2,9 @@ package de.cassisi.lending.integration.student
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import de.cassisi.lending.integration.catalogue.CatalogueKafkaIntegration
-import de.cassisi.lending.service.StudentService
-import de.cassisi.lending.student.CreateStudentCommand
 import de.cassisi.lending.student.MatriculationStatus
 import de.cassisi.lending.student.StudentId
+import de.cassisi.lending.student.StudentService
 import de.cassisi.lending.student.UpdateMatriculationStatusCommand
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
@@ -20,10 +18,9 @@ import java.util.*
 class StudentKafkaIntegration(private val studentService: StudentService) {
 
     companion object {
-        private val logger = LoggerFactory.getLogger(CatalogueKafkaIntegration::class.java)
+        private val logger = LoggerFactory.getLogger(StudentKafkaIntegration::class.java)
 
         // EVENT TYPES
-        private const val STUDENT_ADDED = "student-added"
         private const val STUDENT_MATRICULATION_CHANGED = "student-matriculation-changed"
     }
 
@@ -38,18 +35,6 @@ class StudentKafkaIntegration(private val studentService: StudentService) {
     ) {
         logger.info("processing message from stream $key")
         when (eventType) {
-            STUDENT_ADDED -> {
-                val eventPayload = gson.fromJson(payload, SerializableStudentCreated::class.java)
-                val studentId = StudentId(eventPayload.id)
-
-                // register student
-                val createCommand = CreateStudentCommand(studentId)
-                studentService.registerStudent(createCommand)
-
-                // update matriculation status
-                val status = MatriculationStatus(eventPayload.matriculationStatus)
-                updateMatriculationStatus(studentId, status)
-            }
             STUDENT_MATRICULATION_CHANGED -> {
                 val event = gson.fromJson(payload, SerializableStudentMatriculationChanged::class.java)
                 val studentId = StudentId(event.studentId)
@@ -63,11 +48,6 @@ class StudentKafkaIntegration(private val studentService: StudentService) {
         val updateCommand = UpdateMatriculationStatusCommand(studentId, status)
         studentService.updateMatriculationStatus(updateCommand)
     }
-
-    data class SerializableStudentCreated(
-        @SerializedName("id")                       val id: UUID,
-        @SerializedName("matriculationStatus")      val matriculationStatus: Boolean,
-    )
 
     data class SerializableStudentMatriculationChanged(
         @SerializedName("studentId") val studentId: UUID,
