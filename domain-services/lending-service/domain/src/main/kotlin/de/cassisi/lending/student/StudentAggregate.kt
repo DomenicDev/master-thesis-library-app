@@ -8,6 +8,10 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
     private lateinit var status: MatriculationStatus
     private lateinit var charges: Charges
 
+    override fun isMatriculated(): Boolean {
+        return getMatriculationStatus().status
+    }
+
     override fun getMatriculationStatus(): MatriculationStatus {
         return this.status
     }

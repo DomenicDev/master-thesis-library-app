@@ -5,7 +5,7 @@ import de.cassisi.lending.common.AbstractEventStoreRepository
 import de.cassisi.lending.common.Version
 
 class BookEventStoreRepository(client: EventStoreDBClient) :
-    AbstractEventStoreRepository<BorrowableBook, BookId, BookEvent, SerializableBookEvent>(client) {
+    AbstractEventStoreRepository<Book, BookId, BookEvent, SerializableBookEvent>(client) {
 
     companion object {
         private const val BOOK_ADDED = "borrowable-book-added"
@@ -13,7 +13,7 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
         private const val BOOK_RETURNED = "borrowable-book-returned"
     }
 
-    override fun createEmptyAggregate(id: BookId, version: Version): BorrowableBook {
+    override fun createEmptyAggregate(id: BookId, version: Version): Book {
         return BookFactory.empty(id, version)
     }
 

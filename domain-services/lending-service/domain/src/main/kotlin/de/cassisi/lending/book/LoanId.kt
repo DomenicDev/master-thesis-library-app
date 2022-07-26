@@ -1,4 +1,4 @@
-package de.cassisi.lending.loan
+package de.cassisi.lending.book
 
 import java.util.*
 

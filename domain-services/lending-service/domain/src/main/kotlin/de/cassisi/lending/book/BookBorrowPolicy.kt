@@ -1,14 +1,14 @@
-package de.cassisi.lending.loan
+package de.cassisi.lending.book
 
 import de.cassisi.lending.student.StudentId
 
-class LoanCreationPolicy(private val repository: LoanCreationPolicyRepository) {
+class BookBorrowPolicy(private val repository: BookBorrowPolicyRepository) {
 
     companion object {
         private const val MAX_CHARGES = 20
     }
 
-    fun validateLoanCreationPolicy(studentId: StudentId) {
+    fun validateIfStudentIsAllowedToBorrow(studentId: StudentId) {
         // load student from repository
         val student = repository.findStudentById(studentId)
 

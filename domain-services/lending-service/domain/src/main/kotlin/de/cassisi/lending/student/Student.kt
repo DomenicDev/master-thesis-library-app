@@ -4,6 +4,8 @@ import de.cassisi.lending.common.EventSourcedAggregate
 
 interface Student : EventSourcedAggregate<StudentId, StudentEvent> {
 
+    fun isMatriculated(): Boolean
+
     fun getMatriculationStatus(): MatriculationStatus
 
     fun getCharges(): Charges

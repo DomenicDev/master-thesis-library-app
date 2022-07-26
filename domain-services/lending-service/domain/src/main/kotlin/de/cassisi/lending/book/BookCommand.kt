@@ -2,6 +2,7 @@ package de.cassisi.lending.book
 
 
 sealed interface BookCommand {
+
     data class AddBook(
         val bookId: BookId
     ): BookCommand
@@ -14,5 +15,8 @@ sealed interface BookCommand {
         val bookId: BookId
     ): BookCommand
 
+    data class ExtendLoan(
+        val bookId: BookId
+    ): BookCommand
 }
 
