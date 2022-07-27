@@ -1,12 +1,13 @@
-extraFlags:
-  - "--wiredTigerEngineConfigString=log=(prealloc=false,file_max=20MB)"
-  - "--setParameter diagnosticDataCollectionEnabled=false"
-auth:
-  enabled: false
-persistence:
-  size: 256Mi
-resources:
-  limits:
-    memory: 256Mi
-  requests:
-    memory: 256Mi
+mongodb:
+  extraFlags:
+    - "--wiredTigerEngineConfigString=log=(prealloc=false,file_max=20MB)"
+    - "--setParameter diagnosticDataCollectionEnabled=false"
+  auth:
+    enabled: false
+  persistence:
+    size: 256Mi
+  resources:
+    limits:
+      memory: 256Mi
+    requests:
+      memory: 256Mi
