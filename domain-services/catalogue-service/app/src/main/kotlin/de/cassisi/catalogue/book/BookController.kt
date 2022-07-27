@@ -1,9 +1,8 @@
 package de.cassisi.catalogue.book
 
-import com.eventstore.dbclient.*
+import com.eventstore.dbclient.EventStoreDBClient
 import de.cassisi.catalogue.campus.CampusId
 import de.cassisi.catalogue.metadata.MetadataId
-import org.springframework.boot.CommandLineRunner
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -14,7 +13,7 @@ class BookController(private val bookCommandHandler: BookCommandHandler, private
 
     @PostMapping
     fun createBook(@RequestBody request: AddBookRequest) {
-        val bookId = BookId(UUID.randomUUID())
+        val bookId = BookId(request.bookId)
         val campusId = CampusId(request.campusId)
         val metadataId = MetadataId(request.metadataId)
         val signature = Signature(request.signature)
@@ -29,7 +28,6 @@ class BookController(private val bookCommandHandler: BookCommandHandler, private
 
     @PutMapping
     fun updateSignature(@RequestBody request: UpdateSignatureRequest): ResponseEntity<String> {
-
         val command = BookCommand.UpdateBookSignature(
             BookId(request.bookId),
             Signature(request.signature)
@@ -48,6 +46,14 @@ class BookController(private val bookCommandHandler: BookCommandHandler, private
         println()
         return ResponseEntity.ok(book.toString())
     }
+
+
+    data class AddBookRequest(
+        val bookId: UUID,
+        val campusId: UUID,
+        val metadataId: UUID,
+        val signature: String
+    )
 
 
     data class UpdateSignatureRequest(val bookId: UUID, val signature: String)

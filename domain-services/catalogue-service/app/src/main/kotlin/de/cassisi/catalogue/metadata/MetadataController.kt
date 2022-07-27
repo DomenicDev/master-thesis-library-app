@@ -13,7 +13,7 @@ class MetadataController(private val addMetadata: AddMetadata) {
 
     @PostMapping
     fun addMetadata(@RequestBody request: AddMetadataRequest): ResponseEntity<String> {
-        val metadataId = MetadataId(UUID.randomUUID())
+        val metadataId = MetadataId(request.metadataId)
         val title = Title(request.title)
         val author = Author(request.author)
         val isbn = ISBN(request.isbn)
@@ -34,6 +34,7 @@ class MetadataController(private val addMetadata: AddMetadata) {
 
 
     data class AddMetadataRequest(
+        val metadataId: UUID,
         val title: String,
         val author: String,
         val isbn: String,

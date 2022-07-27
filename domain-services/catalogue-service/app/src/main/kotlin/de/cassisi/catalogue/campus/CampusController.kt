@@ -11,7 +11,7 @@ class CampusController(private val campusCommandHandler: CampusCommandHandler) {
 
     @PostMapping
     fun addCampus(request: AddCampusRequest) {
-        val campusId = CampusId(UUID.randomUUID())
+        val campusId = CampusId(request.campusId)
         val campusLocation = CampusLocation(request.campusLocation)
 
         val command = CreateCampus(campusId, campusLocation)
@@ -19,4 +19,9 @@ class CampusController(private val campusCommandHandler: CampusCommandHandler) {
         campusCommandHandler.createCampus(command)
     }
 
+
+    data class AddCampusRequest(
+        val campusId: UUID,
+        val campusLocation: String
+    )
 }
