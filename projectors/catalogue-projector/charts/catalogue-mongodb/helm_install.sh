@@ -1,0 +1,1 @@
+helm install catalogue-mongodb -f values.yaml bitnami/mongodb
