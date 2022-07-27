@@ -29,7 +29,7 @@ class CatalogueSubscription(
     }
 
     init {
-        logger.info("Subscribing to event store...")
+        logger.info("Subscribing to event store from position ${getCurrentPosition()}...")
         startSubscription()
     }
 
@@ -58,7 +58,7 @@ class CatalogueSubscription(
         val eventData = re.originalEvent.eventData
         val streamId = re.originalEvent.streamId
         val json = String(eventData)
-        logger.info("Handle Event: $streamId $eventType $json")
+        logger.info("Receiving event: $streamId $eventType")
         try {
             when (eventType) {
                 BOOK_ADDED -> {
@@ -78,15 +78,15 @@ class CatalogueSubscription(
                     eventHandler.handle(event)
                 }
             }
-
         } catch (e: Exception) {
             logger.warn("event could not be processed due to ${e.message}")
         }
     }
 
     private fun storeCheckpoint(event: ResolvedEvent) {
-        val position = event.originalEvent.streamRevision.valueUnsigned
+        val position = event.originalEvent.position.commitUnsigned
         checkpointStorage.storeCheckpoint(CHECKPOINT_KEY, position)
+        logger.info("checkpoint stored (position: $position)")
     }
 
     private fun getCurrentPosition(): Long {
@@ -109,7 +109,7 @@ class CatalogueSubscription(
 
     private fun getSubscriptionFilter(): SubscriptionFilter {
         return SubscriptionFilter.newBuilder()
-            .withEventTypeRegularExpression("/^[^\\$].*/") // filter out system events
+            .withEventTypeRegularExpression("^[^\\$].*") // filter out system events
             .build()
     }
 
