@@ -1,0 +1,1 @@
+helm install student-mongodb -f values.yaml bitnami/mongodb
