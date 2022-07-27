@@ -1,0 +1,9 @@
+author: cassisid
+app: catalogue-query-service
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-query-service:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+mongodb:
+  host: catalogue-mongodb
+  port: 27017
