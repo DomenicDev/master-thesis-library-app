@@ -1,0 +1,11 @@
+author: cassisid
+app: charging-projector
+eventstoreName: charging-eventstore
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/charging-projector:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+connectionString: esdb://charging-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000
+mongodb:
+  host: charging-mongodb
+  port: 27017

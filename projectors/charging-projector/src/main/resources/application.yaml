@@ -1,0 +1,16 @@
+eventstore:
+  connection-string: "esdb://charging-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000"
+
+checkpoint-storage:
+  redis:
+    host: "checkpoint-redis-master"
+    port: 6379
+    password: "Y6R8zL83El"
+
+spring:
+  data:
+    mongodb:
+      host: "charging-mongodb"
+      port: 27017
+      database: "charging"
+

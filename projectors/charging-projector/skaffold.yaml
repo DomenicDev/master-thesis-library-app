@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: charging-projector
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/charging-projector
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: charging-projector
+        chartPath: charts/charging-projector
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/charging-projector
