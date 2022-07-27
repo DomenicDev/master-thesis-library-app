@@ -1,6 +1,5 @@
 package de.cassisi.catalogue.book
 
-import com.eventstore.dbclient.EventStoreDBClient
 import de.cassisi.catalogue.campus.CampusId
 import de.cassisi.catalogue.metadata.MetadataId
 import org.springframework.http.ResponseEntity
@@ -9,7 +8,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("book")
-class BookController(private val bookCommandHandler: BookCommandHandler, private val repo: BookRepository, private val client: EventStoreDBClient) {
+class BookController(private val bookCommandHandler: BookCommandHandler, private val repo: BookRepository) {
 
     @PostMapping
     fun createBook(@RequestBody request: AddBookRequest) {
