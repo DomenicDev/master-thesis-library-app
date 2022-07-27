@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: charging-query-service
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/charging-query-service
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: charging-query-service
+        chartPath: charts/charging-query-service
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/charging-query-service

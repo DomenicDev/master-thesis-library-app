@@ -1,1 +1,0 @@
-helm install charging-mongodb -f values.yaml bitnami/mongodb
