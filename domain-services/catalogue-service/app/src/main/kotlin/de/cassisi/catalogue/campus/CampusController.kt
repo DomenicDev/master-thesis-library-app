@@ -1,6 +1,7 @@
 package de.cassisi.catalogue.campus
 
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
@@ -10,7 +11,7 @@ import java.util.*
 class CampusController(private val campusCommandHandler: CampusCommandHandler) {
 
     @PostMapping
-    fun addCampus(request: AddCampusRequest) {
+    fun addCampus(@RequestBody request: AddCampusRequest) {
         val campusId = CampusId(request.campusId)
         val campusLocation = CampusLocation(request.campusLocation)
 
