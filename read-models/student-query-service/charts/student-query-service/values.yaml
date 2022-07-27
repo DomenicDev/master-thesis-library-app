@@ -1,0 +1,9 @@
+author: cassisid
+app: student-query-service
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/student-query-service:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+mongodb:
+  host: student-mongodb
+  port: 27017

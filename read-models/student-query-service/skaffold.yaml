@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: student-query-service
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/student-query-service
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: student-query-service
+        chartPath: charts/student-query-service
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/student-query-service
