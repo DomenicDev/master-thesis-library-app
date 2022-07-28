@@ -18,6 +18,7 @@ class EventHandler(
             event.matriculationNumber,
             event.name.forename,
             event.name.lastname,
+            event.email,
             event.matriculationStatus
         )
         studentRepository.save(document)

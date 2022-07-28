@@ -10,5 +10,6 @@ data class StudentDocument(
     val matriculationNumber: Int,
     val forename: String,
     val lastname: String,
+    val email: String,
     val matriculated: Boolean
 )
