@@ -178,4 +178,18 @@ class APIServiceRestImpl(
         val studentId: UUID
     )
 
+    override fun changeMatriculationStatus(studentId: UUID, matriculated: Boolean) {
+        studentService.put()
+            .uri("/student/")
+            .bodyValue(UpdateMatriculationStatusRequest(studentId, matriculated))
+            .retrieve().toBodilessEntity().block()
+    }
+
+    data class UpdateMatriculationStatusRequest(
+        val studentId: UUID,
+        val matriculated: Boolean
+    )
+
+
+
 }

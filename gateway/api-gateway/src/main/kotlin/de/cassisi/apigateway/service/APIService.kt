@@ -57,4 +57,9 @@ interface APIService {
     fun clearCharges(
         studentId: UUID
     )
+
+    fun changeMatriculationStatus(
+        studentId: UUID,
+        matriculated: Boolean
+    )
 }
