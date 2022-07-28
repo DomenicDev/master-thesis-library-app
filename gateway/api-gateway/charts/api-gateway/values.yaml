@@ -1,0 +1,8 @@
+author: cassisid
+app: api-gateway
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/api-gateway:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+host: kube.informatik.hs-furtwangen.de
+port: 80

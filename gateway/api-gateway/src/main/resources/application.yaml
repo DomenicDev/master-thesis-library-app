@@ -1,0 +1,15 @@
+server:
+  servlet:
+    context-path: "/cassisid"
+
+service:
+  catalogue: "http://catalogue-service/"
+  student: "http://student-service/"
+  lending: "http://lending-service/"
+  charging: "http://charging-service/"
+
+query-service:
+  catalogue: "http://catalogue-query-service/"
+  student: "http://student-query-service/"
+  lending: "http://lending-query-service/"
+  charging: "http://charging-query-service/"

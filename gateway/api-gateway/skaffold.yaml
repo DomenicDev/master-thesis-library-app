@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: api-gateway
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/api-gateway
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: api-gateway
+        chartPath: charts/api-gateway
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/api-gateway

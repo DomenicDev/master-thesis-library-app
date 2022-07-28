@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app }}
+  labels:
+    app: {{ .Values.app }}
+    author: {{ .Values.author }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app }}
+      author: {{ .Values.author }}
+  template:
+    metadata:
+      name: {{ .Values.app }}
+      labels:
+        app: {{ .Values.app }}
+        author: {{ .Values.author }}
+    spec:
+      containers:
+        - name: {{ .Values.app }}-container
+          image: "{{ .Values.image }}"
+          resources:
+            limits:
+              memory: {{ .Values.limitMem }}
+            requests:
+              memory: {{ .Values.requestMem }}
+          livenessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              path: /cassisid/actuator/health/liveness
+              port: 8080
+          readinessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              path: /cassisid/actuator/health/readiness
+              port: 8080
