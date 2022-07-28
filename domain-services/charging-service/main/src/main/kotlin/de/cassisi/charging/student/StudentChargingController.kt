@@ -13,7 +13,7 @@ class StudentChargingController(private val studentService: StudentService) {
 
     @PostMapping
     fun createStudent(@RequestBody request: CreateChargeAccountRequest): ResponseEntity<String> {
-        val studentId = StudentId(UUID.randomUUID())
+        val studentId = StudentId(request.studentId)
         val registerCommand = CreateChargingAccountCommand(studentId)
         studentService.createChargingAccount(registerCommand)
         return ResponseEntity.ok("Charge account created for student with id: ${studentId.uuid}")
