@@ -1,0 +1,11 @@
+author: cassisid
+app: lending-projector
+eventstoreName: lending-eventstore
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/lending-projector:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+connectionString: esdb://lending-eventstore:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000
+mongodb:
+  host: lending-mongodb
+  port: 27017

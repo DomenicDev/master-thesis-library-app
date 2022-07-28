@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: lending-projector
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/lending-projector
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: lending-projector
+        chartPath: charts/lending-projector
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/lending-projector
