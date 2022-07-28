@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: catalogue-service
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-service
+      jib:
+        project: main
+
+deploy:
+  helm:
+    releases:
+      - name: catalogue-service
+        chartPath: charts/catalogue-service
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-service
