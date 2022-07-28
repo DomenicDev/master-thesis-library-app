@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: charging-service
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/charging-service
+      jib:
+        project: main
+
+deploy:
+  helm:
+    releases:
+      - name: charging-service
+        chartPath: charts/charging-service
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/charging-service
