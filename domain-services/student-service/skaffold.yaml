@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: student-service
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/student-service
+      jib:
+        project: main
+
+deploy:
+  helm:
+    releases:
+      - name: student-service
+        chartPath: charts/student-service
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/student-service
