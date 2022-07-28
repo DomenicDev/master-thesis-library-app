@@ -12,7 +12,7 @@ class StudentController(private val registerStudent: RegisterStudent, private va
 
     @PostMapping
     fun createStudent(@RequestBody request: RegisterStudentRequest): ResponseEntity<String> {
-        val studentId = StudentId(UUID.randomUUID())
+        val studentId = StudentId(request.studentId)
         val name = Name(request.forename, request.lastname)
         val email = Email(request.email)
         val matriculationNumber = MatriculationNumber(request.matriculationNumber)
