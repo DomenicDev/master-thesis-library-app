@@ -1,16 +1,15 @@
 package de.cassisi.apigateway.controller
 
+import de.cassisi.apigateway.service.APIQueryService
 import de.cassisi.apigateway.service.APIService
+import de.cassisi.apigateway.service.StudentDTO
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("/student")
-class StudentController(private val apiService: APIService) {
+class StudentRestController(private val apiService: APIService, private val apiQueryService: APIQueryService) {
 
     @PostMapping
     fun addStudent(@RequestBody request: AddStudentRequest): ResponseEntity<UUID> {
@@ -19,19 +18,24 @@ class StudentController(private val apiService: APIService) {
         return ResponseEntity.ok(studentId)
     }
 
-    @PostMapping
+    @PostMapping("/charge")
     fun chargeStudent(@RequestBody request: ChargeStudentRequest) {
         apiService.chargeStudent(request.studentId, request.amount)
     }
 
-    @PostMapping
+    @PostMapping("/clear")
     fun clearCharges(@RequestBody request: ClearChargesRequest) {
         apiService.clearCharges(request.studentId)
     }
 
-    @PostMapping
+    @PostMapping("/status")
     fun changeMatriculationStatus(@RequestBody request: ChangeMatriculationStatus) {
         apiService.changeMatriculationStatus(request.studentId, request.matriculated)
+    }
+
+    @GetMapping
+    fun getStudentDTO(@RequestParam studentId: UUID): ResponseEntity<StudentDTO> {
+        return ResponseEntity.ok(apiQueryService.getStudentInformation(studentId))
     }
 
     data class AddStudentRequest(

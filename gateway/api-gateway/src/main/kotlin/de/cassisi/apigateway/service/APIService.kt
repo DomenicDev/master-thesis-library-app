@@ -62,4 +62,5 @@ interface APIService {
         studentId: UUID,
         matriculated: Boolean
     )
+
 }

@@ -1,6 +1,7 @@
 package de.cassisi.apigateway.controller
 
 import de.cassisi.apigateway.service.APIService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,9 +14,10 @@ import java.util.*
 class BookController(private val apiService: APIService) {
 
     @PostMapping
-    fun addBook(@RequestBody request: AddBookRequest) {
+    fun addBook(@RequestBody request: AddBookRequest): ResponseEntity<UUID> {
         val bookId = UUID.randomUUID()
         apiService.addBook(bookId, request.campusId, request.metadataId, request.signature)
+        return ResponseEntity.ok(bookId)
     }
 
     @PostMapping("/borrow")

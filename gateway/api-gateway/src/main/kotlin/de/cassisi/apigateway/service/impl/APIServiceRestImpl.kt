@@ -1,5 +1,6 @@
-package de.cassisi.apigateway.service
+package de.cassisi.apigateway.service.impl
 
+import de.cassisi.apigateway.service.APIService
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
@@ -189,7 +190,5 @@ class APIServiceRestImpl(
         val studentId: UUID,
         val matriculated: Boolean
     )
-
-
 
 }

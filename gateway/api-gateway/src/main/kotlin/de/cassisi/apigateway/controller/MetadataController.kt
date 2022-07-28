@@ -1,16 +1,15 @@
 package de.cassisi.apigateway.controller
 
+import de.cassisi.apigateway.service.APIQueryService
 import de.cassisi.apigateway.service.APIService
+import de.cassisi.apigateway.service.MetadataDocument
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("/metadata")
-class MetadataController(private val apiService: APIService) {
+class MetadataController(private val apiService: APIService, private val apiQueryService: APIQueryService) {
 
     @PostMapping("/metadata")
     fun addMetadata(@RequestBody request: AddMetadataRequest): ResponseEntity<String> {
@@ -25,5 +24,10 @@ class MetadataController(private val apiService: APIService) {
         val isbn: String,
         val publisher: String
     )
+
+    @GetMapping("/all")
+    fun getAll(): ResponseEntity<List<MetadataDocument>> {
+        return ResponseEntity.ok(apiQueryService.getCatalogue())
+    }
 
 }
