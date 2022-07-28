@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: lending-service
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/lending-service
+      jib:
+        project: main
+
+deploy:
+  helm:
+    releases:
+      - name: lending-service
+        chartPath: charts/lending-service
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/lending-service
