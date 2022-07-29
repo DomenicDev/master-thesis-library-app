@@ -28,4 +28,9 @@ class WebClientQueryServiceConfig {
         return WebClient.builder().baseUrl(url).build()
     }
 
+    @Bean
+    fun catalogueSearchQueryService(@Value("\${query-service.catalogue-search}") url: String): WebClient {
+        return WebClient.builder().baseUrl(url).build()
+    }
+
 }

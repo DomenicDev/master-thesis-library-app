@@ -13,3 +13,4 @@ query-service:
   student: "http://student-query-service/"
   lending: "http://lending-query-service/"
   charging: "http://charging-query-service/"
+  catalogue-search: "http://catalogue-search-query-service/"

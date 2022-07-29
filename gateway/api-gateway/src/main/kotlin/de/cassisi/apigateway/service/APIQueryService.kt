@@ -8,4 +8,6 @@ interface APIQueryService {
 
     fun getStudentInformation(studentId: UUID): StudentDTO
 
+    fun searchByTitle(title: String): List<SimpleMetadataDocument>
+
 }

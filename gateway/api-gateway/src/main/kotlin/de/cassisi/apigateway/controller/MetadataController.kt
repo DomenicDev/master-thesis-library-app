@@ -25,9 +25,6 @@ class MetadataController(private val apiService: APIService, private val apiQuer
         val publisher: String
     )
 
-    @GetMapping("/all")
-    fun getAll(): ResponseEntity<List<MetadataDocument>> {
-        return ResponseEntity.ok(apiQueryService.getCatalogue())
-    }
+
 
 }

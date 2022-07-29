@@ -2,6 +2,7 @@ package de.cassisi.apigateway.service.impl
 
 import de.cassisi.apigateway.service.APIQueryService
 import de.cassisi.apigateway.service.MetadataDocument
+import de.cassisi.apigateway.service.SimpleMetadataDocument
 import de.cassisi.apigateway.service.StudentDTO
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
@@ -14,6 +15,7 @@ class APIQueryServiceImpl(
     private val studentQueryService: WebClient,
     private val lendingQueryService: WebClient,
     private val chargingQueryService: WebClient,
+    private val catalogueSearchQueryService: WebClient
 ) : APIQueryService {
 
     override fun getCatalogue(): List<MetadataDocument> {
@@ -70,4 +72,15 @@ class APIQueryServiceImpl(
         val studentId: String,
         val charges: Int
     )
+
+    override fun searchByTitle(title: String): List<SimpleMetadataDocument> {
+        return catalogueSearchQueryService.get()
+            .uri { uriBuilder ->
+                uriBuilder
+                    .path("search")
+                    .queryParam("title", title)
+                    .build()
+            }
+            .retrieve().bodyToMono<List<SimpleMetadataDocument>>().block()!!
+    }
 }

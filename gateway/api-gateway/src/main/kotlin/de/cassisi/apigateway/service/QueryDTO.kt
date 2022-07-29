@@ -29,3 +29,11 @@ data class StudentDTO(
     val matriculated: Boolean,
     val charges: Int
 )
+
+data class SimpleMetadataDocument(
+    val metadataId: String,
+    val title: String,
+    val author: String,
+    val isbn: String,
+    val publisher: String,
+)
