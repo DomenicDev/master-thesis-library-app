@@ -1,0 +1,8 @@
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 512Mi
+
+replicas: 1
+clusterName: catalogue-search-elasticsearch

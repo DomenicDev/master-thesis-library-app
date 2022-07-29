@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: catalogue-search-projector
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-search-projector
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: catalogue-search-projector
+        chartPath: charts/catalogue-search-projector
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-search-projector
