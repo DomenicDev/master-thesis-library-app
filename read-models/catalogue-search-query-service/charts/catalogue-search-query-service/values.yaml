@@ -1,0 +1,9 @@
+author: cassisid
+app: catalogue-search-query-service
+replicaCount: 1
+image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-search-query-service:latest
+requestMem: 256Mi
+limitMem: 1024Mi
+elasticsearch:
+  host: "catalogue-search-elasticsearch-master"
+  port: 9200

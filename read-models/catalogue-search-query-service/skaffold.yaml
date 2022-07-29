@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: catalogue-search-query-service
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-search-query-service
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: catalogue-search-query-service
+        chartPath: charts/catalogue-search-query-service
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/catalogue-search-query-service
