@@ -37,3 +37,17 @@ data class SimpleMetadataDocument(
     val isbn: String,
     val publisher: String,
 )
+
+data class BookLoanDTO(
+    val bookId: String,
+    val loans: List<LoanDTO>
+)
+
+data class LoanDTO(
+    val loanId: String,
+    val studentId: String,
+    val startDate: String,
+    val endDate: String,
+    val returnDate: String?,
+    val active: Boolean
+)

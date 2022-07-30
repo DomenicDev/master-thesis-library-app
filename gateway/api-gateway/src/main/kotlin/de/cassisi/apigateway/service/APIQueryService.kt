@@ -10,4 +10,8 @@ interface APIQueryService {
 
     fun searchByTitle(title: String): List<SimpleMetadataDocument>
 
+    fun getLoans(): List<BookLoanDTO>
+
+    fun getLoansForBook(bookId: UUID): BookLoanDTO
+
 }

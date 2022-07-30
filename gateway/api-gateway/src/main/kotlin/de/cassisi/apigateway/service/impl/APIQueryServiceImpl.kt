@@ -1,9 +1,6 @@
 package de.cassisi.apigateway.service.impl
 
-import de.cassisi.apigateway.service.APIQueryService
-import de.cassisi.apigateway.service.MetadataDocument
-import de.cassisi.apigateway.service.SimpleMetadataDocument
-import de.cassisi.apigateway.service.StudentDTO
+import de.cassisi.apigateway.service.*
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
@@ -82,5 +79,17 @@ class APIQueryServiceImpl(
                     .build()
             }
             .retrieve().bodyToMono<List<SimpleMetadataDocument>>().block()!!
+    }
+
+    override fun getLoans(): List<BookLoanDTO> {
+        return lendingQueryService.get()
+            .uri("/all")
+            .retrieve().bodyToMono<List<BookLoanDTO>>().block()!!
+    }
+
+    override fun getLoansForBook(bookId: UUID): BookLoanDTO {
+        return lendingQueryService.get()
+            .uri { builder -> builder.path("/").queryParam("bookId", bookId).build() }
+            .retrieve().bodyToMono<BookLoanDTO>().block()!!
     }
 }
