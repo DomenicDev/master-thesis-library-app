@@ -11,8 +11,8 @@ class QueryService(private val bookRepository: BookRepository) {
         return bookRepository.findAll()
     }
 
-    fun getById(studentId: String): BookDocument {
-        return bookRepository.findById(studentId).get()
+    fun getById(bookId: String): BookDocument {
+        return bookRepository.findById(bookId).get()
     }
 
 }

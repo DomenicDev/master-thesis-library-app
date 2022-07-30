@@ -16,8 +16,8 @@ class QueryController(private val queryService: QueryService) {
     }
 
     @GetMapping
-    fun getStudent(@RequestParam studentId: UUID): BookDocument {
-        return queryService.getById(studentId.toString())
+    fun getBookLoans(@RequestParam bookId: UUID): BookDocument {
+        return queryService.getById(bookId.toString())
     }
 
 }

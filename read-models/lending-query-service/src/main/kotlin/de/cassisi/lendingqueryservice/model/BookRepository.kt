@@ -1,7 +1,10 @@
 package de.cassisi.lendingqueryservice.model
 
 import org.springframework.data.mongodb.repository.MongoRepository
+import org.springframework.data.mongodb.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-interface BookRepository : MongoRepository<BookDocument, String>
+interface BookRepository : MongoRepository<BookDocument, String> {
+
+}
