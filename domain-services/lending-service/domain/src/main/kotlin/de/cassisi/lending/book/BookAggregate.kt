@@ -8,17 +8,22 @@ import java.util.*
 
 class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, BookEvent>(id, version) {
 
-    private var currentLoan: Loan? = null
+    private var currentLoan: Loan = NoLoan
     private var reservation: Reservation = NoReservation
 
     override fun isAvailableForLoan(): Boolean {
-        return this.currentLoan == null
+        return this.currentLoan is NoLoan
     }
 
     override fun borrowBook(studentId: StudentId, startDate: LocalDate, policy: BorrowBookPolicy) {
         if (!isAvailableForLoan()) {
             throw BookAlreadyLoanException(getId())
         }
+
+        if (reservation is ActiveReservation && (reservation as ActiveReservation).studentId != studentId) {
+            throw BookReservedBySomeoneElse()
+        }
+
         // validate borrow policy
         policy.validateIfStudentIsAllowedToBorrow(studentId)
 
@@ -34,10 +39,15 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
             endDate
         )
         registerEvent(bookBorrowedEvent)
+
+        // clear reservation if book was reserved
+        if (reservation is ActiveReservation) {
+            clearReservation()
+        }
     }
 
     override fun extendCurrentLoan(policy: ExtendLoanPolicy) {
-        if (currentLoan == null) {
+        if (currentLoan is NoLoan) {
             throw IllegalStateException("Book is currently not borrowed.")
         }
 
@@ -47,28 +57,29 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
         }
 
         // validate extension quota
-        if (currentLoan!!.maximumOfExtensionsReached()) {
-            throw NoMoreExtensionsPossible(currentLoan!!.extensions)
+        val currentLoan = (this.currentLoan as ActiveLoan)
+        if (currentLoan.maximumOfExtensionsReached()) {
+            throw NoMoreExtensionsPossible(currentLoan.extensions)
         }
 
         // validate policy
-        val studentId = currentLoan!!.studentId
+        val studentId = currentLoan.studentId
         policy.validateIfStudentIsAllowedToExtendBook(studentId)
 
         // student is allowed to extend the loan
-        val newEndDate = currentLoan!!.endDate.plusWeeks(4)
+        val newEndDate = currentLoan.endDate.plusWeeks(4)
         val event = LoanExtended(
             getId(),
-            currentLoan!!.loanId,
+            currentLoan.loanId,
             studentId,
-            currentLoan!!.startDate,
+            currentLoan.startDate,
             newEndDate
         )
         registerEvent(event)
     }
 
     override fun returnBook(returnDate: LocalDate) {
-        if (currentLoan == null) {
+        if (isAvailableForLoan()) {
             throw IllegalStateException("Book is currently not loan")
         }
 
@@ -107,14 +118,20 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
     }
 
     override fun clearReservation(): Result<Unit> {
-        TODO("Not yet implemented")
+        return if (reservation is ActiveReservation) {
+            val event = ReservationCleared(getId())
+            registerEvent(event)
+            Result.success(Unit)
+        } else {
+            Result.failure(BookNotReserved())
+        }
     }
 
     /**
      * Only call when you are sure that currentLoan is not null
      */
-    private fun getCurrentLoan(): Loan {
-        return this.currentLoan!!
+    private fun getCurrentLoan(): ActiveLoan {
+        return this.currentLoan as ActiveLoan
     }
 
     override fun handleEvent(event: BookEvent) {
@@ -123,15 +140,18 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
             is BookBorrowed -> handle(event)
             is LoanExtended -> handle(event)
             is BookReturned -> handle(event)
+            is BookReserved -> handle(event)
+            is ReservationCleared -> handle(event)
         }
     }
 
     private fun handle(event: BookAdded) {
-        this.currentLoan = null
+        this.currentLoan = NoLoan
+        this.reservation = NoReservation
     }
 
     private fun handle(event: BookBorrowed) {
-        this.currentLoan = Loan(
+        this.currentLoan = ActiveLoan(
             event.loanId,
             event.studentId,
             event.startDate,
@@ -146,6 +166,17 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
     }
 
     private fun handle(event: BookReturned) {
-        this.currentLoan = null
+        this.currentLoan = NoLoan
+    }
+
+    private fun handle(event: BookReserved) {
+        this.reservation = ActiveReservation(
+            event.reservedBy,
+            event.reservationDate,
+            event.expirationDate)
+    }
+
+    private fun handle(event: ReservationCleared) {
+        this.reservation = NoReservation
     }
 }

@@ -13,6 +13,8 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
         private const val BOOK_BORROWED = "book-borrowed"
         private const val BOOK_RETURNED = "book-returned"
         private const val LOAN_EXTENDED = "loan-extended"
+        private const val BOOK_RESERVED = "book-reserved"
+        private const val RESERVATION_CLEARED = "reservation-cleared"
     }
 
     override fun createEmptyAggregate(id: BookId, version: Version): Book {
@@ -41,6 +43,15 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
                 event.loanId.uuid,
                 event.returnDate
             )
+            is BookReserved -> SerializableBookReserved(
+                event.bookId.id,
+                event.reservedBy.uuid,
+                event.reservationDate,
+                event.expirationDate
+            )
+            is ReservationCleared -> SerializableReservationCleared(
+                event.bookId.id
+            )
         }
     }
 
@@ -68,6 +79,15 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
                 raw.startDate,
                 raw.endDate
             )
+            is SerializableBookReserved -> BookReserved(
+                BookId(raw.bookId),
+                StudentId(raw.reservedBy),
+                raw.reservationDate,
+                raw.expirationDate
+            )
+            is SerializableReservationCleared -> ReservationCleared(
+                BookId(raw.bookId)
+            )
         }
     }
 
@@ -77,6 +97,8 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
             BOOK_BORROWED -> SerializableBookBorrowed::class.java
             BOOK_RETURNED -> SerializableBookReturned::class.java
             LOAN_EXTENDED -> SerializableLoanExtended::class.java
+            BOOK_RESERVED -> SerializableBookReserved::class.java
+            RESERVATION_CLEARED -> SerializableReservationCleared::class.java
             else -> throw IllegalArgumentException("$eventType is not known")
         }
     }
@@ -91,6 +113,8 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
             is BookBorrowed -> BOOK_BORROWED
             is BookReturned -> BOOK_RETURNED
             is LoanExtended -> LOAN_EXTENDED
+            is BookReserved -> BOOK_RESERVED
+            is ReservationCleared -> RESERVATION_CLEARED
         }
     }
 }

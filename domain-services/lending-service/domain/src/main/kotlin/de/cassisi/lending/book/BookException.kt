@@ -11,3 +11,7 @@ data class LoanCreationPolicyFailed(val reason: String): BookException()
 data class NotAllowedToExtendLoan(val reason: String): BookException()
 
 data class ReservationFailed(val reason: String): BookException()
+
+class BookReservedBySomeoneElse(): BookException()
+
+class BookNotReserved(): BookException()

@@ -41,4 +41,4 @@ data class BookReserved(
 
 data class ReservationCleared(
     val bookId: BookId
-)
+): BookEvent
