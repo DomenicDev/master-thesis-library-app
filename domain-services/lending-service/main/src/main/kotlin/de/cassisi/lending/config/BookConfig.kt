@@ -7,7 +7,15 @@ import de.cassisi.lending.book.add.AddBookEventStoreRepository
 import de.cassisi.lending.book.add.AddBookExecutor
 import de.cassisi.lending.book.add.AddBookRepository
 import de.cassisi.lending.book.borrow.*
+import de.cassisi.lending.book.clearreservation.ClearReservation
+import de.cassisi.lending.book.clearreservation.ClearReservationEventStoreRepository
+import de.cassisi.lending.book.clearreservation.ClearReservationExecutor
+import de.cassisi.lending.book.clearreservation.ClearReservationRepository
 import de.cassisi.lending.book.extend.*
+import de.cassisi.lending.book.reserve.ReserveBook
+import de.cassisi.lending.book.reserve.ReserveBookEventStoreRepository
+import de.cassisi.lending.book.reserve.ReserveBookExecutor
+import de.cassisi.lending.book.reserve.ReserveBookRepository
 import de.cassisi.lending.book.returnbook.ReturnBook
 import de.cassisi.lending.book.returnbook.ReturnBookEventStoreRepository
 import de.cassisi.lending.book.returnbook.ReturnBookExecutor
@@ -84,4 +92,23 @@ class BookConfig {
         return ReturnBookExecutor(repository)
     }
 
+    @Bean
+    fun reserveBookRepository(repository: BookEventStoreRepository): ReserveBookRepository {
+        return ReserveBookEventStoreRepository(repository)
+    }
+
+    @Bean
+    fun reserveBook(repository: ReserveBookRepository): ReserveBook {
+        return ReserveBookExecutor(repository)
+    }
+
+    @Bean
+    fun clearReservationRepository(repository: BookEventStoreRepository): ClearReservationRepository {
+        return ClearReservationEventStoreRepository(repository)
+    }
+
+    @Bean
+    fun clearReservation(repository: ClearReservationRepository): ClearReservation {
+        return ClearReservationExecutor(repository)
+    }
 }

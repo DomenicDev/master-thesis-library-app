@@ -39,6 +39,20 @@ class BookController(private val service: BookService) {
         service.returnBook(bookId, returnDate)
     }
 
+    @PostMapping("/reservation")
+    fun reserveBook(@RequestBody request: ReserveBookRequest) {
+        val bookId = BookId(request.bookId)
+        val studentId = StudentId(request.studentId)
+        val reservationDate = request.reservationDate
+        service.reserveBook(bookId, studentId, reservationDate)
+    }
+
+    @PostMapping("/reservation/clear")
+    fun clearReservation(@RequestBody request: ClearReservationRequest) {
+        val bookId = BookId(request.bookId)
+        service.clearReservation(bookId)
+    }
+
     // ----------------------- //
     // REQUEST DATA STRUCTURES //
 
@@ -59,5 +73,15 @@ class BookController(private val service: BookService) {
     data class ReturnBookRequest(
         val bookId: UUID,
         val returnDate: LocalDate
+    )
+
+    data class ReserveBookRequest(
+        val bookId: UUID,
+        val studentId: UUID,
+        val reservationDate: LocalDate
+    )
+
+    data class ClearReservationRequest(
+        val bookId: UUID
     )
 }

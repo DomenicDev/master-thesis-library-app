@@ -1,11 +1,13 @@
 package de.cassisi.lending.book
 
-import de.cassisi.lending.book.BookCommand
-import de.cassisi.lending.book.BookId
 import de.cassisi.lending.book.add.AddBook
 import de.cassisi.lending.book.borrow.BorrowBook
+import de.cassisi.lending.book.clearreservation.ClearReservation
+import de.cassisi.lending.book.clearreservation.ClearReservationCommand
 import de.cassisi.lending.book.extend.ExtendLoan
 import de.cassisi.lending.book.extend.ExtendLoanCommand
+import de.cassisi.lending.book.reserve.ReserveBook
+import de.cassisi.lending.book.reserve.ReserveBookCommand
 import de.cassisi.lending.book.returnbook.ReturnBook
 import de.cassisi.lending.student.StudentId
 import org.springframework.stereotype.Service
@@ -16,7 +18,9 @@ class BookService(
     private val addBook: AddBook,
     private val borrowBook: BorrowBook,
     private val extendLoan: ExtendLoan,
-    private val returnBook: ReturnBook
+    private val returnBook: ReturnBook,
+    private val reserveBook: ReserveBook,
+    private val clearReservation: ClearReservation
     ) {
 
     fun addBook(bookId: BookId) {
@@ -40,4 +44,13 @@ class BookService(
         returnBook.execute(command)
     }
 
+    fun reserveBook(bookId: BookId, studentId: StudentId, reservationDate: LocalDate) {
+        val command = ReserveBookCommand(bookId, studentId, reservationDate)
+        reserveBook.execute(command)
+    }
+
+    fun clearReservation(bookId: BookId) {
+        val command = ClearReservationCommand(bookId)
+        clearReservation.execute(command)
+    }
 }
