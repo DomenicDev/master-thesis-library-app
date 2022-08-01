@@ -9,6 +9,7 @@ import java.util.*
 class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, BookEvent>(id, version) {
 
     private var currentLoan: Loan? = null
+    private var reservation: Reservation = NoReservation
 
     override fun isAvailableForLoan(): Boolean {
         return this.currentLoan == null
@@ -38,6 +39,11 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
     override fun extendCurrentLoan(policy: ExtendLoanPolicy) {
         if (currentLoan == null) {
             throw IllegalStateException("Book is currently not borrowed.")
+        }
+
+        // validate that there is no reservation for this book
+        if (reservation is ActiveReservation) {
+            throw IllegalStateException("Book is reserved and therefore the loan cannot be extended.")
         }
 
         // validate extension quota
@@ -72,6 +78,36 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
             returnDate
         )
         registerEvent(event)
+    }
+
+    override fun reserveBook(studentId: StudentId, reservationDate: LocalDate): Result<Unit> {
+        if (isAvailableForLoan()) {
+            return Result.failure(ReservationFailed("Book cannot be reserved if not loan."))
+        }
+        if (reservation is ActiveReservation) {
+            return Result.failure(ReservationFailed("There is already a reservation"))
+        }
+
+        val expirationDate = calculateExpirationDateForReservation()
+
+        val event = BookReserved(
+            getId(),
+            studentId,
+            reservationDate,
+            expirationDate
+        )
+
+        registerEvent(event)
+        return Result.success(Unit)
+    }
+
+    private fun calculateExpirationDateForReservation(): LocalDate {
+        val loanEndDate = getCurrentLoan().endDate
+        return loanEndDate.plusWeeks(1)
+    }
+
+    override fun clearReservation(): Result<Unit> {
+        TODO("Not yet implemented")
     }
 
     /**

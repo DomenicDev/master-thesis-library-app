@@ -31,3 +31,14 @@ data class BookReturned(
     val loanId: LoanId,
     val returnDate: LocalDate
 ): BookEvent
+
+data class BookReserved(
+    val bookId: BookId,
+    val reservedBy: StudentId,
+    val reservationDate: LocalDate,
+    val expirationDate: LocalDate
+): BookEvent
+
+data class ReservationCleared(
+    val bookId: BookId
+)

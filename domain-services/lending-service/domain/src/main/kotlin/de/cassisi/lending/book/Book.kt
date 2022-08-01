@@ -14,4 +14,8 @@ sealed interface Book: EventSourcedAggregate<BookId, BookEvent> {
 
     fun returnBook(returnDate: LocalDate)
 
+    fun reserveBook(studentId: StudentId, reservationDate: LocalDate): Result<Unit>
+
+    fun clearReservation(): Result<Unit>
+
 }
