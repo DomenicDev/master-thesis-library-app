@@ -34,7 +34,7 @@ class EventHandler(
             event.startDate.toString(),
             event.endDate.toString()
         )
-        val updated = oldDocument.copy(currentLoan = newCurrentLoan)
+        val updated = oldDocument.copy(available = false, currentLoan = newCurrentLoan)
         bookRepository.save(updated)
     }
 
