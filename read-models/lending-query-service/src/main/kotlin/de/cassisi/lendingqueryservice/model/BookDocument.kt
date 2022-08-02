@@ -1,13 +1,23 @@
-package de.cassisi.lendingqueryservice.model
+package de.cassisi.lendingprojector.dbmodel
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "books")
 data class BookDocument(
     @Id
     val bookId: String,
-    val loans: List<Loan>
+    val available: Boolean,
+    val reserved: Boolean,
+    val currentReservation: Reservation?,
+    val currentLoan: Loan?
+)
+
+data class Reservation(
+    val reservedBy: String,
+    val reservationDate: String,
+    val expirationDate: String
 )
 
 data class Loan(
@@ -15,6 +25,4 @@ data class Loan(
     val studentId: String,
     val startDate: String,
     val endDate: String,
-    val returnDate: String?,
-    val active: Boolean
 )

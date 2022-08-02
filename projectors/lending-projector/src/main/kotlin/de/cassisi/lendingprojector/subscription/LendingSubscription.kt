@@ -23,12 +23,16 @@ class LendingSubscription(
         private const val BOOK_BORROWED = "book-borrowed"
         private const val BOOK_RETURNED = "book-returned"
         private const val LOAN_EXTENDED = "loan-extended"
+        private const val BOOK_RESERVED = "book-reserved"
+        private const val RESERVATION_CLEARED = "reservation-cleared"
 
         // CHECKPOINT NAME
         private const val CHECKPOINT_KEY = "charging-projector"
     }
 
     init {
+        // reset checkpoint
+        checkpointStorage.storeCheckpoint(CHECKPOINT_KEY, 0)
         logger.info("Subscribing to event store from position ${getCurrentPosition()}...")
         startSubscription()
     }
@@ -75,6 +79,14 @@ class LendingSubscription(
                 }
                 LOAN_EXTENDED -> {
                     val event = gson.fromJson(json, SerializableLoanExtended::class.java)
+                    eventHandler.handle(event)
+                }
+                BOOK_RESERVED -> {
+                    val event = gson.fromJson(json, SerializableBookReserved::class.java)
+                    eventHandler.handle(event)
+                }
+                RESERVATION_CLEARED -> {
+                    val event = gson.fromJson(json, SerializableReservationCleared::class.java)
                     eventHandler.handle(event)
                 }
             }

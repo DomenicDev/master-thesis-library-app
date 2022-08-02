@@ -8,16 +8,21 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class BookDocument(
     @Id
     val bookId: String,
-    val loans: List<Loan>
+    val available: Boolean,
+    val reserved: Boolean,
+    val currentReservation: Reservation?,
+    val currentLoan: Loan?
+)
+
+data class Reservation(
+    val reservedBy: String,
+    val reservationDate: String,
+    val expirationDate: String
 )
 
 data class Loan(
     val loanId: String,
-    @Indexed
     val studentId: String,
     val startDate: String,
     val endDate: String,
-    val returnDate: String?,
-    val active: Boolean,
-    val extensions: Int
 )

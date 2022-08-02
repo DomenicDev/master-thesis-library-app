@@ -1,7 +1,6 @@
 package de.cassisi.lendingqueryservice.service
 
 import de.cassisi.lendingqueryservice.model.BookDocument
-import de.cassisi.lendingqueryservice.model.BookRepository
 import org.springframework.stereotype.Service
 
 @Service
