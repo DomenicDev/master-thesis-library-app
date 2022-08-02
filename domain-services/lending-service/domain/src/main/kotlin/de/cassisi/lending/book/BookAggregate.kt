@@ -73,7 +73,8 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
             currentLoan.loanId,
             studentId,
             currentLoan.startDate,
-            newEndDate
+            newEndDate,
+            currentLoan.extensions+1
         )
         registerEvent(event)
     }
@@ -161,7 +162,7 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
     }
 
     private fun handle(event: LoanExtended) {
-        getCurrentLoan().incrementExtension()
+        getCurrentLoan().extensions = event.numberOfExtensions
         getCurrentLoan().endDate = event.endDate
     }
 

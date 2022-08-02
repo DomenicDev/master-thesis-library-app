@@ -30,7 +30,8 @@ data class SerializableLoanExtended(
     @SerializedName("loanId") val loanId: UUID,
     @SerializedName("studentId") val studentId: UUID,
     @SerializedName("startDate") val startDate: LocalDate,
-    @SerializedName("endDate") val endDate: LocalDate
+    @SerializedName("endDate") val endDate: LocalDate,
+    @SerializedName("extensions") val numberOfExtensions: Int
 ): SerializableBookEvent
 
 data class SerializableBookReserved(

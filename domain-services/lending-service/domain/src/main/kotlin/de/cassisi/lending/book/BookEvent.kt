@@ -23,7 +23,8 @@ data class LoanExtended(
     val loanId: LoanId,
     val studentId: StudentId,
     val startDate: LocalDate,
-    val endDate: LocalDate
+    val endDate: LocalDate,
+    val numberOfExtensions: Int
 ): BookEvent
 
 data class BookReturned(

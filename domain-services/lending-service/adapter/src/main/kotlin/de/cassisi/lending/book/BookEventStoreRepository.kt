@@ -36,7 +36,8 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
                 event.loanId.uuid,
                 event.studentId.uuid,
                 event.startDate,
-                event.endDate
+                event.endDate,
+                event.numberOfExtensions
             )
             is BookReturned -> SerializableBookReturned(
                 event.bookId.id,
@@ -77,7 +78,8 @@ class BookEventStoreRepository(client: EventStoreDBClient) :
                 LoanId(raw.loanId),
                 StudentId(raw.studentId),
                 raw.startDate,
-                raw.endDate
+                raw.endDate,
+                raw.numberOfExtensions
             )
             is SerializableBookReserved -> BookReserved(
                 BookId(raw.bookId),
