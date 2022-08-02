@@ -1,4 +1,4 @@
-package de.cassisi.lendingprojector.dbmodel
+package de.cassisi.lendingqueryservice.model
 
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository

@@ -1,14 +1,16 @@
 package de.cassisi.lendingqueryservice.controller
 
 import de.cassisi.lendingqueryservice.model.BookDocument
-import de.cassisi.lendingqueryservice.service.QueryService
+import de.cassisi.lendingqueryservice.service.BookQueryService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-class QueryController(private val queryService: QueryService) {
+@RequestMapping("/book")
+class BookController(private val queryService: BookQueryService) {
 
     @GetMapping("/all")
     fun getAll(): List<BookDocument> {
