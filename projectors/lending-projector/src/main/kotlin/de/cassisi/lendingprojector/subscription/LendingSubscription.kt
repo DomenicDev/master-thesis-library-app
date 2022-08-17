@@ -27,7 +27,7 @@ class LendingSubscription(
         private const val RESERVATION_CLEARED = "reservation-cleared"
 
         // CHECKPOINT NAME
-        private const val CHECKPOINT_KEY = "charging-projector"
+        private const val CHECKPOINT_KEY = "lending-projector"
     }
 
     init {
