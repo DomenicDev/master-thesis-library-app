@@ -8,14 +8,15 @@ class ExtendLoanPolicy(private val repository: ExtendLoanPolicyRepository) {
         private const val MAX_CHARGES = 20
     }
 
-    fun validateIfStudentIsAllowedToExtendBook(studentId: StudentId) {
+    fun validateIfStudentIsAllowedToExtendBook(studentId: StudentId): Result<Unit> {
         val student = repository.getStudentById(studentId)
-        if (student.getCharges().amount > MAX_CHARGES) {
-            throw NotAllowedToExtendLoan("Charges exceeded")
+        if (student.isLocked()) {
+            return Result.failure(NotAllowedToExtendLoan("Charges exceeded"))
         }
         if (!student.isMatriculated()) {
-            throw NotAllowedToExtendLoan("Student must be matriculated.")
+            return Result.failure(NotAllowedToExtendLoan("Student must be matriculated."))
         }
+        return Result.success(Unit)
     }
 
 }

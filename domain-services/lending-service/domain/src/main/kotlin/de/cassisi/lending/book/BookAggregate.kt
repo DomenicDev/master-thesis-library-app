@@ -15,17 +15,18 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
         return this.currentLoan is NoLoan
     }
 
-    override fun borrowBook(studentId: StudentId, startDate: LocalDate, policy: BorrowBookPolicy) {
+    override fun borrowBook(studentId: StudentId, startDate: LocalDate, policy: BorrowBookPolicy): Result<Unit> {
         if (!isAvailableForLoan()) {
-            throw BookAlreadyLoanException(getId())
+            return Result.failure(BookAlreadyLoan(getId()))
         }
 
         if (reservation is ActiveReservation && (reservation as ActiveReservation).studentId != studentId) {
-            throw BookReservedBySomeoneElse()
+            return Result.failure(BookReservedBySomeoneElse())
         }
 
         // validate borrow policy
-        policy.validateIfStudentIsAllowedToBorrow(studentId)
+        val result = policy.validateIfStudentIsAllowedToBorrow(studentId)
+        if (result.isFailure) return result
 
         // student is allowed to borrow the book
         val loanId = LoanId(UUID.randomUUID())
@@ -44,27 +45,29 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
         if (reservation is ActiveReservation) {
             clearReservation()
         }
+        return Result.success(Unit)
     }
 
-    override fun extendCurrentLoan(policy: ExtendLoanPolicy) {
+    override fun extendCurrentLoan(policy: ExtendLoanPolicy): Result<Unit> {
         if (currentLoan is NoLoan) {
-            throw IllegalStateException("Book is currently not borrowed.")
+            return Result.failure(IllegalStateException("Book is currently not borrowed."))
         }
 
         // validate that there is no reservation for this book
         if (reservation is ActiveReservation) {
-            throw IllegalStateException("Book is reserved and therefore the loan cannot be extended.")
+            return Result.failure(IllegalStateException("Book is reserved and therefore the loan cannot be extended."))
         }
 
         // validate extension quota
         val currentLoan = (this.currentLoan as ActiveLoan)
         if (currentLoan.maximumOfExtensionsReached()) {
-            throw NoMoreExtensionsPossible(currentLoan.extensions)
+            return Result.failure(NoMoreExtensionsPossible(currentLoan.extensions))
         }
 
         // validate policy
         val studentId = currentLoan.studentId
-        policy.validateIfStudentIsAllowedToExtendBook(studentId)
+        val result = policy.validateIfStudentIsAllowedToExtendBook(studentId)
+        if (result.isFailure) return result
 
         // student is allowed to extend the loan
         val newEndDate = currentLoan.endDate.plusWeeks(4)
@@ -77,6 +80,7 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
             currentLoan.extensions+1
         )
         registerEvent(event)
+        return Result.success(Unit)
     }
 
     override fun returnBook(returnDate: LocalDate) {
@@ -94,10 +98,10 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
 
     override fun reserveBook(studentId: StudentId, reservationDate: LocalDate): Result<Unit> {
         if (isAvailableForLoan()) {
-            return Result.failure(ReservationFailed("Book cannot be reserved if not loan."))
+            return Result.failure(BookNotLent(getId()))
         }
         if (reservation is ActiveReservation) {
-            return Result.failure(ReservationFailed("There is already a reservation"))
+            return Result.failure(BookAlreadyReserved(getId()))
         }
 
         val expirationDate = calculateExpirationDateForReservation()

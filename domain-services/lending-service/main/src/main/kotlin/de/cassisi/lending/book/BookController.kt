@@ -1,6 +1,7 @@
 package de.cassisi.lending.book
 
 import de.cassisi.lending.student.StudentId
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -40,11 +41,16 @@ class BookController(private val service: BookService) {
     }
 
     @PostMapping("/reservation")
-    fun reserveBook(@RequestBody request: ReserveBookRequest) {
+    fun reserveBook(@RequestBody request: ReserveBookRequest): ResponseEntity<Unit> {
         val bookId = BookId(request.bookId)
         val studentId = StudentId(request.studentId)
         val reservationDate = request.reservationDate
-        service.reserveBook(bookId, studentId, reservationDate)
+        val result = service.reserveBook(bookId, studentId, reservationDate)
+
+        return result.fold(
+            { ResponseEntity.ok().build() },
+            { ResponseEntity.badRequest().build() }
+        )
     }
 
     @PostMapping("/reservation/clear")

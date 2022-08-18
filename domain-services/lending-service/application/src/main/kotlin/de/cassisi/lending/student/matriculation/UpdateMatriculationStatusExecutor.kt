@@ -7,7 +7,7 @@ class UpdateMatriculationStatusExecutor(private val repository: UpdateMatriculat
     override fun execute(command: UpdateMatriculationStatusCommand) {
         val studentId = command.studentId
         val student = repository.getById(studentId)
-        student.execute(command)
+        student.changeMatriculationStatus(command.newStatus)
         repository.save(student)
     }
 

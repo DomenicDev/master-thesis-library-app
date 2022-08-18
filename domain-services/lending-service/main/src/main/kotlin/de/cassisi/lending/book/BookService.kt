@@ -44,9 +44,9 @@ class BookService(
         returnBook.execute(command)
     }
 
-    fun reserveBook(bookId: BookId, studentId: StudentId, reservationDate: LocalDate) {
+    fun reserveBook(bookId: BookId, studentId: StudentId, reservationDate: LocalDate): Result<Unit> {
         val command = ReserveBookCommand(bookId, studentId, reservationDate)
-        reserveBook.execute(command)
+        return reserveBook.execute(command)
     }
 
     fun clearReservation(bookId: BookId) {

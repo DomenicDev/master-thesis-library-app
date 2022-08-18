@@ -2,9 +2,9 @@ package de.cassisi.lending.config
 
 import com.eventstore.dbclient.EventStoreDBClient
 import de.cassisi.lending.student.StudentEventStoreRepository
-import de.cassisi.lending.student.charge.UpdateStudentCharges
-import de.cassisi.lending.student.charge.UpdateStudentChargesExecutor
-import de.cassisi.lending.student.charge.UpdateStudentChargesRepository
+import de.cassisi.lending.student.lock.UpdateLockStatus
+import de.cassisi.lending.student.lock.UpdateLockStatusExecutor
+import de.cassisi.lending.student.lock.UpdateLockStatusRepository
 import de.cassisi.lending.student.matriculation.UpdateMatriculationStatus
 import de.cassisi.lending.student.matriculation.UpdateMatriculationStatusEventStoreRepository
 import de.cassisi.lending.student.matriculation.UpdateMatriculationStatusExecutor
@@ -36,13 +36,13 @@ class StudentConfig {
     }
 
     @Bean
-    fun chargeStudentRepository(repository: StudentEventStoreRepository): UpdateStudentChargesRepository {
+    fun chargeStudentRepository(repository: StudentEventStoreRepository): UpdateLockStatusRepository {
         return ChargeStudentEventStoreRepository(repository)
     }
 
     @Bean
-    fun chargeStudent(repository: UpdateStudentChargesRepository): UpdateStudentCharges {
-        return UpdateStudentChargesExecutor(repository)
+    fun chargeStudent(repository: UpdateLockStatusRepository): UpdateLockStatus {
+        return UpdateLockStatusExecutor(repository)
     }
 
     @Bean

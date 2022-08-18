@@ -5,7 +5,7 @@ sealed interface StudentEvent
 data class StudentCreated(
     val id: StudentId,
     val matriculationStatus: MatriculationStatus,
-    val charges: Charges
+    val lockStatus: LockStatus
 ) : StudentEvent
 
 data class StudentMatriculatedChanged(
@@ -13,7 +13,7 @@ data class StudentMatriculatedChanged(
     val matriculationStatus: MatriculationStatus
 ) : StudentEvent
 
-data class StudentChargesChanged(
+data class StudentLockStatusChanged(
     val student: StudentId,
-    val newCharges: Charges
+    val lockStatus: LockStatus
 ): StudentEvent

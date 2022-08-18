@@ -4,30 +4,23 @@ import de.cassisi.lending.student.StudentId
 
 class BorrowBookPolicy(private val repository: BorrowBookPolicyRepository) {
 
-    companion object {
-        private const val MAX_CHARGES = 20
-    }
-
-    fun validateIfStudentIsAllowedToBorrow(studentId: StudentId) {
+    fun validateIfStudentIsAllowedToBorrow(studentId: StudentId): Result<Unit> {
         // load student from repository
         val student = repository.findStudentById(studentId)
 
         // read fields
         val matriculated = student.getMatriculationStatus().status
-        val charges = student.getCharges().amount
 
         // validate policy rules:
         // 1) the student must be matriculated
         if (!matriculated) {
-            throw LoanCreationPolicyFailed("Student with id $studentId is not matriculated")
+            return Result.failure(LoanCreationPolicyFailed("Student with id $studentId is not matriculated"))
         }
         // 2) the student charges must not be higher than 20
-        if (charges > MAX_CHARGES) {
-            throw LoanCreationPolicyFailed("The charges of the specified student are too high: $charges")
+        if (student.isLocked()) {
+            return Result.failure(LoanCreationPolicyFailed("The student with id $studentId is locked for lending."))
         }
-
+        return Result.success(Unit)
     }
-
-
 
 }

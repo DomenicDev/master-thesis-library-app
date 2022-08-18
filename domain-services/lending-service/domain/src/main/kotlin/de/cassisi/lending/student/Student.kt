@@ -8,10 +8,14 @@ interface Student : EventSourcedAggregate<StudentId, StudentEvent> {
 
     fun getMatriculationStatus(): MatriculationStatus
 
-    fun getCharges(): Charges
+    fun getLockStatus(): LockStatus
 
-    fun execute(command: UpdateStudentChargesCommand)
+    fun isLocked(): Boolean
 
-    fun execute(command: UpdateMatriculationStatusCommand)
+    fun changeMatriculationStatus(updatedStatus: MatriculationStatus)
+
+    fun lockStudentForLending()
+
+    fun unlockStudentForLending()
 
 }

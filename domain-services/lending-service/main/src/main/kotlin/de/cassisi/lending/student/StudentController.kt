@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping("/student")
@@ -14,13 +14,11 @@ class StudentController(private val service: StudentService) {
     fun addStudent(@RequestBody request: AddStudentRequest) {
         val studentId = StudentId(request.studentId)
         val matriculationStatus = MatriculationStatus(request.matriculated)
-        val charges = Charges(request.charges)
-        this.service.registerStudent(studentId, matriculationStatus, charges)
+        this.service.registerStudent(studentId, matriculationStatus, LockStatus(false))
     }
 
     data class AddStudentRequest(
         val studentId: UUID,
-        val matriculated: Boolean,
-        val charges: Int
+        val matriculated: Boolean
     )
 }

@@ -8,7 +8,7 @@ sealed interface SerializableStudentEvent
 data class SerializableStudentCreated(
     @SerializedName("id")       val id: UUID,
     @SerializedName("status")   val matriculationStatus: Boolean,
-    @SerializedName("charges")  val charges: Int
+    @SerializedName("charges")  val lockStatus: Boolean
 ): SerializableStudentEvent
 
 data class SerializableStudentMatriculationChanged(
@@ -16,8 +16,7 @@ data class SerializableStudentMatriculationChanged(
     @SerializedName("matriculationStatus") val status: Boolean
 ): SerializableStudentEvent
 
-data class SerializableStudentChargesChanged(
+data class SerializableStudentLockStatusChanged(
     @SerializedName("studentId") val studentId: UUID,
-    @SerializedName("newCharges") val newCharges: Int
+    @SerializedName("lockStatus") val lockStatus: Boolean
 ): SerializableStudentEvent
-

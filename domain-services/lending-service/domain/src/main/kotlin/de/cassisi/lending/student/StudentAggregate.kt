@@ -6,7 +6,7 @@ import de.cassisi.lending.common.Version
 class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate<StudentId, StudentEvent>(id, version) {
 
     private lateinit var status: MatriculationStatus
-    private lateinit var charges: Charges
+    private lateinit var lockStatus: LockStatus
 
     override fun isMatriculated(): Boolean {
         return getMatriculationStatus().status
@@ -16,24 +16,31 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         return this.status
     }
 
-    override fun getCharges(): Charges {
-        return this.charges
+    override fun getLockStatus(): LockStatus {
+        return this.lockStatus
     }
 
-    override fun execute(command: UpdateStudentChargesCommand) {
-        val newCharges = command.currentCharges
-        val event = StudentChargesChanged(
+    override fun isLocked(): Boolean {
+        return this.lockStatus.locked
+    }
+
+    override fun changeMatriculationStatus(updatedStatus: MatriculationStatus) {
+        val event = StudentMatriculatedChanged(
             getId(),
-            newCharges
+            updatedStatus
         )
         registerEvent(event)
     }
 
-    override fun execute(command: UpdateMatriculationStatusCommand) {
-        val event = StudentMatriculatedChanged(
-            getId(),
-            command.newStatus
-        )
+    override fun lockStudentForLending() {
+        if (isLocked()) return
+        val event = StudentLockStatusChanged(getId(), LockStatus(true))
+        registerEvent(event)
+    }
+
+    override fun unlockStudentForLending() {
+        if (!isLocked()) return
+        val event = StudentLockStatusChanged(getId(), LockStatus(false))
         registerEvent(event)
     }
 
@@ -41,21 +48,21 @@ class StudentAggregate(id: StudentId, version: Version) : Student, BaseAggregate
         when (event) {
             is StudentCreated -> handle(event)
             is StudentMatriculatedChanged -> handle(event)
-            is StudentChargesChanged -> handle(event)
+            is StudentLockStatusChanged -> handle(event)
         }
     }
 
     private fun handle(event: StudentCreated) {
         this.status = event.matriculationStatus
-        this.charges = event.charges
+        this.lockStatus = LockStatus(false)
     }
 
     private fun handle(event: StudentMatriculatedChanged) {
         this.status = event.matriculationStatus
     }
 
-    private fun handle(event: StudentChargesChanged) {
-        this.charges = event.newCharges
+    private fun handle(event: StudentLockStatusChanged) {
+        this.lockStatus = event.lockStatus
     }
 
 }
