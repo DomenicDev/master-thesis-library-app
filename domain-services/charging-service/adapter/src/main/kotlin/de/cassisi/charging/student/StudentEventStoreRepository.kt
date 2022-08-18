@@ -12,6 +12,8 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) :
         private const val STUDENT_CHARGE_ACCOUNT_CREATED = "student-charge-account-created"
         private const val STUDENT_CHARGED = "student-charged"
         private const val STUDENT_CHARGES_PAID = "student-charges-paid"
+        private const val LENDING_VIOLATION_OCCURRED = "lending-violation-occurred"
+        private const val LENDING_VIOLATION_RESOLVED = "lending-violation-resolved"
     }
 
     override fun createEmptyAggregate(id: StudentId, version: Version): Student {
@@ -32,6 +34,14 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) :
                 event.studentId.uuid,
                 event.currentCharges.charges
             )
+            is LendingViolationOccurred -> SerializableLendingViolationOccurred(
+                event.studentId.uuid,
+                event.currentCharges.charges
+            )
+            is LendingViolationResolved -> SerializableLendingViolationResolved(
+                event.studentId.uuid,
+                event.currentCharges.charges
+            )
         }
     }
 
@@ -49,6 +59,14 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) :
                 StudentId(raw.studentId),
                 Charges(raw.currentCharges)
             )
+            is SerializableLendingViolationOccurred -> LendingViolationOccurred(
+                StudentId(raw.studentId),
+                Charges(raw.currentCharges)
+            )
+            is SerializableLendingViolationResolved -> LendingViolationResolved(
+                StudentId(raw.studentId),
+                Charges(raw.currentCharges)
+            )
         }
     }
 
@@ -57,6 +75,8 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) :
             STUDENT_CHARGE_ACCOUNT_CREATED -> SerializableStudentChargeAccountCreated::class.java
             STUDENT_CHARGED -> SerializableStudentCharged::class.java
             STUDENT_CHARGES_PAID -> SerializableStudentChargesPaid::class.java
+            LENDING_VIOLATION_OCCURRED -> SerializableLendingViolationOccurred::class.java
+            LENDING_VIOLATION_RESOLVED -> SerializableLendingViolationResolved::class.java
             else -> throw IllegalArgumentException()
         }
     }
@@ -70,6 +90,8 @@ open class StudentEventStoreRepository(client: EventStoreDBClient) :
             is StudentChargeAccountCreated -> STUDENT_CHARGE_ACCOUNT_CREATED
             is StudentCharged -> STUDENT_CHARGED
             is StudentChargesPaid -> STUDENT_CHARGES_PAID
+            is LendingViolationOccurred -> LENDING_VIOLATION_OCCURRED
+            is LendingViolationResolved -> LENDING_VIOLATION_RESOLVED
         }
     }
 }

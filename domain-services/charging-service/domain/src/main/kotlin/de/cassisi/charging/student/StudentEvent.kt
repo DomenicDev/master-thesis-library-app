@@ -17,3 +17,12 @@ data class StudentChargesPaid(
     val currentCharges: Charges
 ): StudentEvent
 
+data class LendingViolationOccurred(
+    val studentId: StudentId,
+    val currentCharges: Charges
+): StudentEvent
+
+data class LendingViolationResolved(
+    val studentId: StudentId,
+    val currentCharges: Charges
+): StudentEvent

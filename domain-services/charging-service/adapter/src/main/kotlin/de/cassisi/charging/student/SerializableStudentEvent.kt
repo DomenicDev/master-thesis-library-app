@@ -19,3 +19,13 @@ data class SerializableStudentChargesPaid(
     @SerializedName("studentId") val studentId: UUID,
     @SerializedName("currentCharges") val currentCharges: Int
 ): SerializableStudentEvent
+
+data class SerializableLendingViolationOccurred(
+    @SerializedName("studentId") val studentId: UUID,
+    @SerializedName("currentCharges") val currentCharges: Int
+): SerializableStudentEvent
+
+data class SerializableLendingViolationResolved(
+    @SerializedName("studentId") val studentId: UUID,
+    @SerializedName("currentCharges") val currentCharges: Int
+): SerializableStudentEvent
