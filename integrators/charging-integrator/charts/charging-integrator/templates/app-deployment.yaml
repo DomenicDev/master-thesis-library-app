@@ -19,17 +19,15 @@ spec:
         author: {{ .Values.author }}
     spec:
       containers:
-        - name: {{ .Values.app }}-{{ .Values.author }}-container
+        - name: {{ .Values.app }}-container
           image: {{ .Values.image }}
           env:
             - name: eventstore.connection-string
               value: {{ .Values.connectionString }}
           resources:
             limits:
-              cpu: {{ .Values.limitCPU }}
               memory: {{ .Values.limitMem }}
             requests:
-              cpu: {{ .Values.requestCPU }}
               memory: {{ .Values.requestMem }}
           livenessProbe:
             initialDelaySeconds: 15

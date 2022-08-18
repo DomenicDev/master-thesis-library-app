@@ -7,7 +7,7 @@ import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
 
 @Component
-class StudentIntegrationEventHandler(
+class ChargingEventPublisher(
     @Value("\${charging-topic.name}") private val topicName: String,
     private val template: KafkaTemplate<String, String>) {
 

@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta8
+kind: Config
+metadata:
+  name: charging-integrator
+build:
+  artifacts:
+    - image: docker.informatik.hs-furtwangen.de/cassisid/charging-integrator
+      jib: {}
+
+deploy:
+  helm:
+    releases:
+      - name: charging-integrator
+        chartPath: charts/charging-integrator
+        artifactOverrides:
+          image: docker.informatik.hs-furtwangen.de/cassisid/charging-integrator

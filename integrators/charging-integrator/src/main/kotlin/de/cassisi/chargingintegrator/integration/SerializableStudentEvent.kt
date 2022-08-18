@@ -5,17 +5,12 @@ import java.util.UUID
 
 sealed interface SerializableStudentEvent
 
-data class SerializableStudentChargeAccountCreated(
-    @SerializedName("studentId") val id: UUID,
-    @SerializedName("charges") val charges: Int
-) : SerializableStudentEvent
-
-data class SerializableStudentCharged(
+data class SerializableLendingViolationOccurred(
     @SerializedName("studentId") val studentId: UUID,
     @SerializedName("currentCharges") val currentCharges: Int
-) : SerializableStudentEvent
+): SerializableStudentEvent
 
-data class SerializableStudentChargesPaid(
+data class SerializableLendingViolationResolved(
     @SerializedName("studentId") val studentId: UUID,
     @SerializedName("currentCharges") val currentCharges: Int
 ): SerializableStudentEvent

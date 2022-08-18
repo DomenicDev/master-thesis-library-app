@@ -13,16 +13,15 @@ import java.util.*
 class EventStoreSubscriber(
     private val client: EventStoreDBClient,
     private val checkpointStorage: CheckpointStorage,
-    private val eventHandler: StudentIntegrationEventHandler,
-    @Value("\${stream-prefix}")private val  streamPrefix: String) : CommandLineRunner {
+    private val eventPublisher: ChargingEventPublisher,
+    @Value("\${stream-prefix}") private val  streamPrefix: String) : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(EventStoreSubscriber::class.java)
     private val gson = Gson()
 
     companion object {
-        private const val STUDENT_CHARGE_ACCOUNT_CREATED = "student-charge-account-created"
-        private const val STUDENT_CHARGED = "student-charged"
-        private const val STUDENT_CHARGES_PAID = "student-charges-paid"
+        private const val LENDING_VIOLATION_OCCURRED = "lending-violation-occurred"
+        private const val LENDING_VIOLATION_RESOLVED = "lending-violation-resolved"
 
         private const val CHECKPOINT_STREAM_NAME = "charging-integration-checkpoint"
     }
@@ -59,23 +58,15 @@ class EventStoreSubscriber(
         logger.info("Handle Event: $streamId $eventType $json")
         try {
             when (eventType) {
-                STUDENT_CHARGE_ACCOUNT_CREATED -> {
-                    val createdEvent = gson.fromJson(eventType, SerializableStudentChargeAccountCreated::class.java)
-                    val studentId = createdEvent.id
-                    val charges = createdEvent.charges
-                    sendIntegrationEvent(streamId, eventId, studentId, charges)
+                LENDING_VIOLATION_OCCURRED -> {
+                    val serializableEvent = gson.fromJson(json, SerializableLendingViolationOccurred::class.java)
+                    val studentId = serializableEvent.studentId
+                    publishLendingViolationOccurredEvent(streamId, eventId, studentId)
                 }
-                STUDENT_CHARGED -> {
-                    val chargedEvent = gson.fromJson(eventType, SerializableStudentCharged::class.java)
-                    val studentId = chargedEvent.studentId
-                    val charges = chargedEvent.currentCharges
-                    sendIntegrationEvent(streamId, eventId, studentId, charges)
-                }
-                STUDENT_CHARGES_PAID -> {
-                    val paidEvent = gson.fromJson(eventType, SerializableStudentChargesPaid::class.java)
-                    val studentId = paidEvent.studentId
-                    val charges = paidEvent.currentCharges
-                    sendIntegrationEvent(streamId, eventId, studentId, charges)
+                LENDING_VIOLATION_RESOLVED -> {
+                    val serializableEvent = gson.fromJson(json, SerializableLendingViolationResolved::class.java)
+                    val studentId = serializableEvent.studentId
+                    publishLendingViolationResolvedEvent(streamId, eventId, studentId)
                 }
             }
 
@@ -84,10 +75,20 @@ class EventStoreSubscriber(
         }
     }
 
-    private fun sendIntegrationEvent(streamId: String, eventId: String, studentId: UUID, charges: Int) {
-        val integrationEvent = SimpleChargingIntegrationEvent(studentId, charges)
-        val json = gson.toJson(integrationEvent)
-        eventHandler.sendJson(streamId, eventId, "student-charges-changed", json)
+    private fun publishLendingViolationOccurredEvent(streamId: String, eventId: String, studentId: UUID) {
+        val event = LendingViolationOccurredEvent(studentId)
+        val payload = gson.toJson(event)
+        publishEvent(streamId, eventId, "lending-violation-occurred", payload)
+    }
+
+    private fun publishLendingViolationResolvedEvent(streamId: String, eventId: String, studentId: UUID) {
+        val event = LendingViolationResolvedEvent(studentId)
+        val payload = gson.toJson(event)
+        publishEvent(streamId, eventId, "lending-violation-resolved", payload)
+    }
+
+    private fun publishEvent(streamId: String, eventId: String, eventType: String, payload: String) {
+        eventPublisher.sendJson(streamId, eventId, eventType, payload)
     }
 
     private fun storeCheckpoint(event: ResolvedEvent) {
@@ -102,7 +103,6 @@ class EventStoreSubscriber(
     private fun resubscribe() {
         startSubscription()
     }
-
 
     private fun getSubscriptionOptions(): SubscribeToAllOptions {
         val bookStreamFilter = getSubscriptionFilter()
@@ -119,11 +119,14 @@ class EventStoreSubscriber(
             .build()
     }
 
-    data class SimpleChargingIntegrationEvent(
-        val studentId: UUID,
-        val currentCharges: Int
+
+    data class LendingViolationOccurredEvent(
+        val studentId: UUID
     )
 
+    data class LendingViolationResolvedEvent(
+        val studentId: UUID
+    )
 }
 
 
