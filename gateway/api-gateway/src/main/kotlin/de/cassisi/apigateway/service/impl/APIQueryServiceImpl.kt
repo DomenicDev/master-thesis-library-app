@@ -83,7 +83,7 @@ class APIQueryServiceImpl(
 
     override fun getLoans(): List<BookLoanDTO> {
         return lendingQueryService.get()
-            .uri("/all")
+            .uri("/book/all")
             .retrieve().bodyToMono<List<BookLoanDTO>>().block()!!
     }
 

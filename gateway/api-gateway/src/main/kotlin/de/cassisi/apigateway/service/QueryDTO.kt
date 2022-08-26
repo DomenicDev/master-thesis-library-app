@@ -40,14 +40,21 @@ data class SimpleMetadataDocument(
 
 data class BookLoanDTO(
     val bookId: String,
-    val loans: List<LoanDTO>
+    val available: Boolean,
+    val reserved: Boolean,
+    val currentReservation: Reservation?,
+    val currentLoan: Loan?
 )
 
-data class LoanDTO(
+data class Reservation(
+    val reservedBy: String,
+    val reservationDate: String,
+    val expirationDate: String
+)
+
+data class Loan(
     val loanId: String,
     val studentId: String,
     val startDate: String,
     val endDate: String,
-    val returnDate: String?,
-    val active: Boolean
 )
