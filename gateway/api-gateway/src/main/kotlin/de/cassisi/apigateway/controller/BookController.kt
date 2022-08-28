@@ -14,10 +14,8 @@ import java.util.*
 class BookController(private val apiService: APIService) {
 
     @PostMapping
-    fun addBook(@RequestBody request: AddBookRequest): ResponseEntity<UUID> {
-        val bookId = UUID.randomUUID()
-        apiService.addBook(bookId, request.campusId, request.metadataId, request.signature)
-        return ResponseEntity.ok(bookId)
+    fun addBook(@RequestBody request: AddBookRequest) {
+        apiService.addBook(request.bookId, request.campusId, request.metadataId, request.signature)
     }
 
     @PostMapping("/borrow")
@@ -36,6 +34,7 @@ class BookController(private val apiService: APIService) {
     }
 
     data class AddBookRequest(
+        val bookId: UUID,
         val campusId: UUID,
         val metadataId: UUID,
         val signature: String

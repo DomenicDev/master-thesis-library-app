@@ -6,3 +6,4 @@ requestMem: 256Mi
 limitMem: 1024Mi
 host: kube.informatik.hs-furtwangen.de
 port: 80
+path: /cassisid/api/

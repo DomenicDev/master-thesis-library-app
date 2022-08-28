@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/catalogue")
-class CatalogueController(private val apiQueryService: APIQueryService) {
+@RequestMapping("/catalog")
+class CatalogController(private val apiQueryService: APIQueryService) {
 
     @GetMapping("/all")
     fun getAll(): ResponseEntity<List<MetadataDocument>> {

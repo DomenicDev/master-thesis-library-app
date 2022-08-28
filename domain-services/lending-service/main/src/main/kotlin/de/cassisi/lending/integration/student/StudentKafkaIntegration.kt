@@ -33,7 +33,7 @@ class StudentKafkaIntegration(private val studentService: StudentService) {
         @Header("eventType") eventType: String,
         @Payload payload: String
     ) {
-        logger.info("processing message from stream $key")
+        logger.info("processing students message from stream $key")
         when (eventType) {
             STUDENT_MATRICULATION_CHANGED -> {
                 val event = gson.fromJson(payload, SerializableStudentMatriculationChanged::class.java)

@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: "/cassisid"
+    context-path: "/cassisid/api/"
 
 service:
   catalogue: "http://catalogue-service/"

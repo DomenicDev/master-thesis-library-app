@@ -83,9 +83,9 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
         return Result.success(Unit)
     }
 
-    override fun returnBook(returnDate: LocalDate) {
+    override fun returnBook(returnDate: LocalDate): Result<Unit> {
         if (isAvailableForLoan()) {
-            throw IllegalStateException("Book is currently not loan")
+            return Result.failure(IllegalStateException("Book is currently not loan"))
         }
 
         val event = BookReturned(
@@ -94,6 +94,7 @@ class BookAggregate(id: BookId, version: Version) : Book, BaseAggregate<BookId, 
             returnDate
         )
         registerEvent(event)
+        return Result.success(Unit)
     }
 
     override fun reserveBook(studentId: StudentId, reservationDate: LocalDate): Result<Unit> {

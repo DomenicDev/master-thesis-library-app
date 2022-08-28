@@ -13,13 +13,13 @@ import java.util.*
 class CampusController(private val apiService: APIService) {
 
     @PostMapping
-    fun addCampus(@RequestBody request: AddCampusRequest): ResponseEntity<UUID> {
-        val campusId = UUID.randomUUID()
-        apiService.addCampus(campusId, request.campus)
-        return ResponseEntity.ok(campusId)
+    fun addCampus(@RequestBody request: AddCampusRequest): ResponseEntity<Unit> {
+        apiService.addCampus(request.campusId, request.campus)
+        return ResponseEntity.ok().build()
     }
 
     data class AddCampusRequest(
+        val campusId: UUID,
         val campus: String
     )
 

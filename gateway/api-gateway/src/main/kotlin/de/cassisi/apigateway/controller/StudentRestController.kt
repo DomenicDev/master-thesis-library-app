@@ -12,10 +12,8 @@ import java.util.*
 class StudentRestController(private val apiService: APIService, private val apiQueryService: APIQueryService) {
 
     @PostMapping
-    fun addStudent(@RequestBody request: AddStudentRequest): ResponseEntity<UUID> {
-        val studentId = UUID.randomUUID()
-        apiService.addStudent(studentId, request.matriculationNumber, request.forename, request.lastname, request.email, request.matriculated)
-        return ResponseEntity.ok(studentId)
+    fun addStudent(@RequestBody request: AddStudentRequest) {
+        apiService.addStudent(request.studentId, request.matriculationNumber, request.forename, request.lastname, request.email, request.matriculated)
     }
 
     @PostMapping("/charge")
@@ -39,6 +37,7 @@ class StudentRestController(private val apiService: APIService, private val apiQ
     }
 
     data class AddStudentRequest(
+        val studentId: UUID,
         val matriculationNumber: Int,
         val forename: String,
         val lastname: String,

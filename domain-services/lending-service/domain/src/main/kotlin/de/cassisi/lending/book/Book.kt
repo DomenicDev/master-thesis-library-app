@@ -12,7 +12,7 @@ sealed interface Book: EventSourcedAggregate<BookId, BookEvent> {
 
     fun extendCurrentLoan(policy: ExtendLoanPolicy): Result<Unit>
 
-    fun returnBook(returnDate: LocalDate)
+    fun returnBook(returnDate: LocalDate): Result<Unit>
 
     fun reserveBook(studentId: StudentId, reservationDate: LocalDate): Result<Unit>
 

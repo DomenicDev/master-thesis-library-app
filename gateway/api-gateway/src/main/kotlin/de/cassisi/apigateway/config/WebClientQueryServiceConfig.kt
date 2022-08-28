@@ -33,4 +33,5 @@ class WebClientQueryServiceConfig {
         return WebClient.builder().baseUrl(url).build()
     }
 
+
 }

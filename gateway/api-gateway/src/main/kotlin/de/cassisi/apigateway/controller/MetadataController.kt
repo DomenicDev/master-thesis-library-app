@@ -12,19 +12,16 @@ import java.util.*
 class MetadataController(private val apiService: APIService, private val apiQueryService: APIQueryService) {
 
     @PostMapping("/metadata")
-    fun addMetadata(@RequestBody request: AddMetadataRequest): ResponseEntity<String> {
-        val metadataId = UUID.randomUUID()
-        apiService.addMetadata(metadataId, request.title, request.author, request.isbn, request.publisher)
-        return ResponseEntity.ok("$metadataId")
+    fun addMetadata(@RequestBody request: AddMetadataRequest) {
+        apiService.addMetadata(request.metadataId, request.title, request.author, request.isbn, request.publisher)
     }
 
     data class AddMetadataRequest(
+        val metadataId: UUID,
         val title: String,
         val author: String,
         val isbn: String,
         val publisher: String
     )
-
-
 
 }
